@@ -27,9 +27,9 @@ export default function ContactPage() {
               >
                 Leadership team
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {contacts.map((contact) => (
-                  <li key={contact.name} className="border-b border-border-subtle/60 pb-3">
+                  <li key={contact.name} className="border-b border-border-subtle/60 pb-4">
                     <p className="text-base font-medium text-inkStrong">
                       {contact.name}
                     </p>
@@ -37,14 +37,14 @@ export default function ContactPage() {
                       {contact.role}
                     </p>
                     <a
-                      className="mt-1 inline-flex text-sm text-inkStrong underline decoration-[6px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
+                      className="mt-1 inline-flex pb-1 text-sm text-inkStrong underline decoration-[3px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
                       href={`mailto:${contact.email}`}
                     >
                       {contact.email}
                     </a>
                     {contact.phone ? (
                       <a
-                        className="mt-1 flex text-sm text-inkStrong underline decoration-[6px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
+                        className="mt-1 flex pb-1 text-sm text-inkStrong underline decoration-[3px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
                         href={`tel:${contact.phone.replace(/\s+/g, "")}`}
                       >
                         {contact.phone}

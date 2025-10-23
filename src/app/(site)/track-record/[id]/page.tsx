@@ -290,14 +290,12 @@ export default async function TrackRecordPropertyPage({
         </Section>
       ) : null}
 
-      <Section className="pt-0" containerClassName="gap-0 !px-0" bleed>
-        <CallToActionBanner
-          href="/contact"
-          headline="Explore future mandates"
-          subheadline="Start a conversation →"
-          className="border-t border-border-strong/30 py-12 sm:px-8 sm:rounded-none lg:px-12 lg:py-14"
-        />
-      </Section>
+      <CallToActionBanner
+        href="/contact"
+        headline="Explore future mandates"
+        subheadline="Start a conversation →"
+        className="border-t border-border-strong/30"
+      />
 
       <script
         type="application/ld+json"

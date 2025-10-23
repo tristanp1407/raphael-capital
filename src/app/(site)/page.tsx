@@ -51,7 +51,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[8px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
+              className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[4px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
             >
               Discover our story →
             </Link>
@@ -59,20 +59,12 @@ export default function HomePage() {
           <BrandsGrid brands={brands.slice(0, 8)} />
         </div>
       </Section>
-      <Section
-        id="track-record-cta"
-        className="pt-0"
-        bleed
-        containerClassName="!px-0"
-      >
-        <div className="mx-auto w-full max-w-6xl px-0 sm:px-6 lg:px-10">
-          <CallToActionBanner
-            href="/track-record"
-            headline="Explore our projects across London and the UK"
-            subheadline="View track record →"
-          />
-        </div>
-      </Section>
-    </div>
-  );
-}
+	      <CallToActionBanner
+	        className="mt-0"
+	        href="/track-record"
+	        headline="Explore our projects across London and the UK"
+	        subheadline="View track record →"
+	      />
+	    </div>
+	  );
+	}
