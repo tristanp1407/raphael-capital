@@ -62,7 +62,7 @@ export function SiteHeader() {
               className="h-[60px] w-auto sm:h-16 lg:h-20"
             />
           </Link>
-          <nav className="hidden items-center gap-6 text-sm font-medium text-ink/80 lg:flex">
+          <nav className="hidden items-center gap-8 text-base font-medium text-ink/80 lg:flex">
             {navLinks.map((link) => {
               const isActive = current === link.href || pathname === link.href;
 
@@ -70,20 +70,12 @@ export function SiteHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative pb-1 transition hover:text-inkStrong"
+                  className="group/nav relative pb-1.5 text-inkStrong/80 transition hover:text-inkStrong"
                 >
                   {link.label}
-                  {isActive ? (
-                    <span className="absolute inset-x-0 bottom-0 h-px bg-inkStrong" />
-                  ) : prefersReducedMotion ? null : (
-                    <motion.span
-                      className="absolute inset-x-0 bottom-0 h-px bg-accent/80"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                      style={{ originX: 0 }}
-                    />
-                  )}
+                  <span
+                    className={`pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-inkStrong/60 transition-transform duration-150 ease-out ${isActive ? "scale-x-100 bg-rc-indigo" : prefersReducedMotion ? "scale-x-0" : "scale-x-0 group-hover/nav:scale-x-100"}`}
+                  />
                 </Link>
               );
             })}

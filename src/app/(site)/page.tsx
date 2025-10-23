@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Hero } from "@/components/hero";
 import { Section } from "@/components/section";
@@ -5,6 +6,12 @@ import { PropertyGrid } from "@/components/property-grid";
 import { BrandsGrid } from "@/components/brands-grid";
 import { featuredProperties, brands } from "@/lib/data";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
+
+export const metadata: Metadata = {
+  title: "Raphael Capital | Private Property Investment & Development",
+  description:
+    "Raphael Capital is a privately owned UK property investment company acquiring and repositioning assets across retail, mixed-use, residential, office and industrial sectors.",
+};
 
 export default function HomePage() {
   return (

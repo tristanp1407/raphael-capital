@@ -4,9 +4,9 @@ import { TrackRecordView } from "@/components/track-record-view";
 import { allProperties } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Track Record",
+  title: "Track Record | Raphael Capital",
   description:
-    "Explore Raphael Capital's investment track record across UK sectors.",
+    "Review Raphael Capital’s current and previous UK property investments across retail, office, industrial, residential, mixed-use and development sectors.",
 };
 
 export default function TrackRecordPage() {

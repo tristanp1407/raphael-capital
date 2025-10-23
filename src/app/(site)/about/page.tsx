@@ -5,9 +5,9 @@ import { Timeline } from "@/components/timeline";
 import { brands, historyMilestones } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Raphael Capital | UK Property Investment & Development",
   description:
-    "Discover Raphael Capital's heritage, partnerships and investment philosophy.",
+    "Learn how Raphael Capital acquires and develops UK real estate with private capital, delivering discreet transactions across retail, office, mixed-use and residential sectors.",
 };
 
 export default function AboutPage() {

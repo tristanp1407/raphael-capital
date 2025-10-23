@@ -5,8 +5,9 @@ import { contacts } from "@/lib/data";
 import { playfair } from "@/app/fonts";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Speak with Raphael Capital about investment opportunities.",
+  title: "Contact Raphael Capital",
+  description:
+    "Connect with Raphael Capital to discuss property investment and development opportunities across the UK.",
 };
 
 export default function ContactPage() {
@@ -41,6 +42,14 @@ export default function ContactPage() {
                     >
                       {contact.email}
                     </a>
+                    {contact.phone ? (
+                      <a
+                        className="mt-1 flex text-sm text-inkStrong underline decoration-[6px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
+                        href={`tel:${contact.phone.replace(/\s+/g, "")}`}
+                      >
+                        {contact.phone}
+                      </a>
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -51,10 +60,9 @@ export default function ContactPage() {
               >
                 Office
               </h3>
-              <p>Raphael Capital</p>
-              <p>9 Clifford Street</p>
-              <p>Mayfair, London</p>
-              <p>W1S 2FT</p>
+              <p>Raphael Property Investment Co. Ltd.</p>
+              <p>18 Jacob’s Well Mews</p>
+              <p>London W1U 3DR</p>
             </div>
           </div>
         </div>

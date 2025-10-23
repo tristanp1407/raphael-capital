@@ -211,27 +211,37 @@ export const propertySlugs = allProperties.map((property) => property.id);
 
 export const brands = [
   "Wendy’s",
+  "Optical Express",
   "Boots",
-  "Fortnum & Mason",
-  "Selfridges",
-  "Laureate Estates",
-  "LVMH",
-  "Pret A Manger",
-  "Waitrose",
-  "The Strand Group",
-  "Liberty London",
+  "Greggs",
+  "Bill's",
+  "Rohan",
+  "Dune",
+  "Taco Bell",
+  "Space NK",
+  "Costa",
+  "JoJo Maman Bébé",
+  "Marks & Spencer",
+  "WHSmith",
+  "Santander",
+  "Bank of Scotland",
+  "Hotel Chocolat",
+  "B&M",
+  "GAME",
 ] as const;
 
 export const contacts = [
   {
     name: "Victor Levy",
     role: "Principal",
-    email: "victor@raphaelcapital.co.uk",
+    email: "victor.levy@raphaelcapital.co.uk",
+    phone: "07831 583428",
   },
   {
     name: "Samuel Levy",
     role: "Director",
-    email: "samuel@raphaelcapital.co.uk",
+    email: "samuel.levy@raphaelcapital.co.uk",
+    phone: "07936 494317",
   },
 ] as const;
 

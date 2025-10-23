@@ -4,8 +4,9 @@ import { Section } from "@/components/section";
 import { assetRequirements } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Requirements",
-  description: "Current acquisition criteria for Raphael Capital.",
+  title: "Acquisition Requirements | Raphael Capital",
+  description:
+    "Discover the property sectors Raphael Capital is actively seeking, including mixed-use, retail, offices, industrial warehouses, shopping centres and development land across the UK.",
 };
 
 export default function RequirementsPage() {
