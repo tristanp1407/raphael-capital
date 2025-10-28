@@ -59,12 +59,12 @@ export default function HomePage() {
           <BrandsGrid brands={brands.slice(0, 8)} />
         </div>
       </Section>
-	      <CallToActionBanner
-	        className="mt-0"
-	        href="/track-record"
-	        headline="Explore our projects across London and the UK"
-	        subheadline="View track record →"
-	      />
-	    </div>
-	  );
-	}
+      <CallToActionBanner
+        className="mt-0"
+        href="/track-record"
+        headline="Explore our previous and current projects"
+        subheadline="View Projects →"
+      />
+    </div>
+  );
+}

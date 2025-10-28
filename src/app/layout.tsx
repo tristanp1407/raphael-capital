@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | Raphael Capital",
   },
   description:
-    "Raphael Capital is a discreet investment partner with a 25-year track record across London and the UK.",
+    "Raphael Capital is a discreet investment partner with a 25-year portfolio of projects across London and the UK.",
 };
 
 export default function RootLayout({

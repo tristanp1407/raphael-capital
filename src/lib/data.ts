@@ -233,13 +233,13 @@ export const brands = [
 export const contacts = [
   {
     name: "Victor Levy",
-    role: "Principal",
+    role: "Managing Partner",
     email: "victor.levy@raphaelcapital.co.uk",
     phone: "07831 583428",
   },
   {
     name: "Samuel Levy",
-    role: "Director",
+    role: "Partner",
     email: "samuel.levy@raphaelcapital.co.uk",
     phone: "07936 494317",
   },

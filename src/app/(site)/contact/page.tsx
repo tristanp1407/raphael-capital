@@ -3,6 +3,7 @@ import { ContactForm } from "@/components/contact-form";
 import { Section } from "@/components/section";
 import { contacts } from "@/lib/data";
 import { playfair } from "@/app/fonts";
+import { OfficeLocationMap } from "@/components/office-location-map";
 
 export const metadata: Metadata = {
   title: "Contact Raphael Capital",
@@ -65,6 +66,9 @@ export default function ContactPage() {
               <p>London W1U 3DR</p>
             </div>
           </div>
+        </div>
+        <div className="mt-6">
+          <OfficeLocationMap />
         </div>
       </Section>
     </div>

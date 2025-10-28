@@ -9,7 +9,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/track-record", label: "Track Record" },
+  { href: "/track-record", label: "Projects" },
   { href: "/requirements", label: "Requirements" },
   { href: "/contact", label: "Contact" },
 ] as const;

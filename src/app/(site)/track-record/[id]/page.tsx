@@ -14,7 +14,7 @@ import {
   getPropertyPlaceholderById,
 } from "@/lib/data";
 
-type TrackRecordPropertyPageProps = {
+type ProjectsPropertyPageProps = {
   params: Promise<{ id: string }>;
 };
 
@@ -22,7 +22,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
-}: TrackRecordPropertyPageProps): Promise<Metadata> {
+}: ProjectsPropertyPageProps): Promise<Metadata> {
   const { id } = await params;
   const property = getPropertyById(id);
 
@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   const media = getPropertyPlaceholderById(property.id);
   const description = `${property.summary} Located in ${property.location}, completed in ${property.year}.`;
-  const title = `${property.name} | Track Record | Raphael Capital`;
+  const title = `${property.name} | Projects | Raphael Capital`;
   const url = `/track-record/${property.id}`;
 
   return {
@@ -68,9 +68,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function TrackRecordPropertyPage({
+export default async function ProjectsPropertyPage({
   params,
-}: TrackRecordPropertyPageProps) {
+}: ProjectsPropertyPageProps) {
   const { id } = await params;
   const property = getPropertyById(id);
 
@@ -125,7 +125,7 @@ export default async function TrackRecordPropertyPage({
                 href="/track-record"
                 className="font-medium text-ink/70 hover:text-rc-navy"
               >
-                Track Record
+                Projects
               </Link>
             </li>
             <li className="text-ink/35">/</li>
@@ -198,7 +198,7 @@ export default async function TrackRecordPropertyPage({
                 })}
               >
                 <span className="text-rc-navy group-hover:text-white group-focus-visible:text-white">
-                  Back to portfolio
+                  Back to projects
                 </span>
               </Link>
             </div>
@@ -282,7 +282,7 @@ export default async function TrackRecordPropertyPage({
       </Section>
       {related.length ? (
         <Section
-          headline="More from our portfolio"
+          headline="More from our projects"
           className="bg-bg-faint"
           containerClassName="gap-12"
         >

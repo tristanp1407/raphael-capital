@@ -1,14 +1,35 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/section";
 import { BrandsGrid } from "@/components/brands-grid";
-import { Timeline } from "@/components/timeline";
-import { brands, historyMilestones } from "@/lib/data";
+import { playfair } from "@/app/fonts";
+import { brands } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About Raphael Capital | UK Property Investment & Development",
   description:
     "Learn how Raphael Capital acquires and develops UK real estate with private capital, delivering discreet transactions across retail, office, mixed-use and residential sectors.",
 };
+
+const teamMembers = [
+  {
+    name: "Victor Levy",
+    role: "Managing Partner",
+    bios: [
+      "Victor Levy is a qualified accountant with over 50 years of experience in the property sector.",
+      "He founded Raphael Property Investment Company in 1989 after a successful career at Arthur Andersen, where he led the International Banking and Financial Markets division.",
+      "More recently, Victor played a pivotal role in establishing Raphael Capital LLP, where he now oversees the partnership's investment strategy.",
+    ],
+  },
+  {
+    name: "Samuel Levy",
+    role: "Partner",
+    bios: [
+      "Samuel Levy is a Chartered Surveyor with over 8 years of experience in the real estate sector.",
+      "He began his career at a PLC housebuilder before joining CBRE's London Development team.",
+      "Across both roles, he has been involved in transactions exceeding GBP 600 million within the living development sector. Samuel now works closely alongside Victor to run the day-to-day operations of the partnership, focusing on deal origination and management to drive long-term growth.",
+    ],
+  },
+] as const;
 
 export default function AboutPage() {
   return (
@@ -34,11 +55,34 @@ export default function AboutPage() {
         </div>
       </Section>
       <Section
-        id="about-timeline"
-        headline="Milestones"
+        id="about-team"
+        headline="The Team"
         containerClassName="gap-12"
       >
-        <Timeline items={historyMilestones} />
+        <div className="grid gap-10 lg:grid-cols-2">
+          {teamMembers.map((member) => (
+            <article
+              key={member.name}
+              className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-border-subtle/70 bg-white/95 p-6 shadow-sm"
+            >
+              <div>
+                <h3
+                  className={`${playfair.className} text-2xl font-black text-inkStrong sm:text-[28px]`}
+                >
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-xs uppercase tracking-[0.28em] text-ink/55">
+                  {member.role}
+                </p>
+              </div>
+              <div className="space-y-4 text-base leading-relaxed text-ink/75">
+                {member.bios.map((paragraph, index) => (
+                  <p key={`${member.name}-${index}`}>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </Section>
       <Section
         id="about-brands"
