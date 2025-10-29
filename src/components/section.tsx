@@ -35,7 +35,7 @@ export function Section({
   const headingId = headline ? `${baseId ?? "section"}-heading` : undefined;
   const paddingClasses = padding ?? "py-20 sm:py-24";
   const containerClasses = `mx-auto flex w-full ${
-    bleed ? "max-w-none" : "max-w-6xl"
+    bleed ? "max-w-none" : "max-w-[1280px]"
   } flex-col gap-10 px-6 sm:px-8 lg:px-10 ${containerClassName ?? ""}`;
 
   const headingNode = headline

@@ -19,7 +19,7 @@ export function CallToActionBanner({
         className ?? ""
       }`}
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 py-10 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 sm:py-12 lg:px-10 lg:py-14">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-6 py-10 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 sm:py-12 lg:px-10 lg:py-14">
         <span className="text-lg font-semibold text-white">{headline}</span>
         {subheadline ? (
           <span className="text-sm uppercase tracking-[0.3em] text-white/70 transition duration-300 group-hover:text-white">

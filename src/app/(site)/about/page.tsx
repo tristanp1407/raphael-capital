@@ -3,6 +3,7 @@ import { Section } from "@/components/section";
 import { BrandsGrid } from "@/components/brands-grid";
 import { playfair } from "@/app/fonts";
 import { brands } from "@/lib/data";
+import { AnimatedGridPattern } from "@/components/animated-grid-pattern";
 
 export const metadata: Metadata = {
   title: "About Raphael Capital | UK Property Investment & Development",
@@ -34,29 +35,40 @@ const teamMembers = [
 export default function AboutPage() {
   return (
     <div className="flex flex-col">
-      <Section
-        id="about-intro"
-        headline="Heritage stewardship, institutional discipline"
-        containerClassName="gap-10"
-      >
-        <div className="space-y-6 text-base text-ink/75">
-          <p>
-            For twenty-five years, Raphael Capital has stewarded private family
-            wealth into enduring real estate assets. Built on discretion and
-            conviction, our partnerships span household retail brands,
-            blue-chip offices and bespoke residential developments.
-          </p>
-          <p>
-            We deploy capital methodically, uncovering value through planning
-            expertise, design sensitivity and operational focus. Every asset is
-            curated to balance income security today with capital growth for the
-            next generation.
-          </p>
-        </div>
-      </Section>
+      <div className="relative overflow-hidden">
+        <AnimatedGridPattern
+          className="absolute top-[-30] sm:top-[-100] inset-y-0 right-0 h-full w-[65%] skew-y-8 text-rc-navy/18 [mask-image:radial-gradient(520px_circle_at_right,white,transparent)]"
+          numSquares={160}
+          width={28}
+          height={28}
+          maxOpacity={0.06}
+        />
+        <Section
+          id="about-intro"
+          headline="Heritage stewardship, institutional discipline"
+          containerClassName="gap-10"
+          className="relative z-10"
+        >
+          <div className="space-y-6 text-base text-ink/75">
+            <p>
+              For twenty-five years, Raphael Capital has stewarded private
+              family wealth into enduring real estate assets. Built on
+              discretion and conviction, our partnerships span household retail
+              brands, blue-chip offices and bespoke residential developments.
+            </p>
+            <p>
+              We deploy capital methodically, uncovering value through planning
+              expertise, design sensitivity and operational focus. Every asset
+              is curated to balance income security today with capital growth
+              for the next generation.
+            </p>
+          </div>
+        </Section>
+      </div>
       <Section
         id="about-team"
         headline="The Team"
+        className="bg-bg-faint"
         containerClassName="gap-12"
       >
         <div className="grid gap-10 lg:grid-cols-2">

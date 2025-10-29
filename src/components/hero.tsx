@@ -6,10 +6,10 @@ import { buttonClasses } from "@/components/button";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden py-32 sm:py-40">
+    <section className="relative isolate overflow-hidden py-24 sm:py-40">
       <div className="absolute inset-0 -z-10 gradient-veil" aria-hidden />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[rgba(9,31,91,0.25)] via-transparent to-[rgba(53,68,121,0.15)]" />
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 sm:px-8 lg:px-10">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-6 sm:px-8 lg:px-10">
         <FadeIn className="max-w-4xl">
           <h1
             className={`${playfair.className} mt-4 text-4xl font-black leading-tight text-inkStrong sm:text-5xl lg:text-6xl`}

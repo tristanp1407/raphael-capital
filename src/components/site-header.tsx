@@ -44,9 +44,9 @@ export function SiteHeader() {
   }, [mobileNavOpen]);
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50  bg-bg-surface/90 backdrop-blur-sm transition">
-      <div className="w-full border-b border-border-subtle/60">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 sm:px-8 sm:py-5 lg:gap-8 lg:px-10">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="w-full border-b border-white/20 bg-white/70 shadow-[0_12px_32px_-24px_rgba(9,31,91,0.28)] backdrop-blur-lg transition supports-[backdrop-filter]:bg-white/30 supports-[backdrop-filter]:backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-6 py-4 sm:px-8 sm:py-5 lg:gap-8 lg:px-10">
           <Link
             href="/"
             className="flex items-center"
@@ -137,9 +137,9 @@ export function SiteHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-            className="w-full border-b border-border-subtle/60 bg-bg-surface/95 shadow-md lg:hidden"
+            className="w-full border-b border-white/20 bg-white/80 shadow-[0_10px_24px_-20px_rgba(9,31,91,0.26)] backdrop-blur-lg supports-[backdrop-filter]:bg-white/30 supports-[backdrop-filter]:backdrop-blur-xl lg:hidden"
           >
-            <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 sm:px-6">
+            <div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-4 py-6 sm:px-6">
               {navLinks.map((link) => {
                 const isActive =
                   current === link.href || pathname === link.href;

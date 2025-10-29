@@ -15,7 +15,7 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-border-subtle/70 bg-bg-surface">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-16 sm:px-8 lg:px-10">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12 px-6 py-16 sm:px-8 lg:px-10">
         <div className="grid gap-10 border-b border-border-subtle/60 pb-12 md:grid-cols-2 lg:grid-cols-[minmax(0,_1.6fr)_repeat(3,minmax(0,_1fr))]">
           <div className="space-y-5">
             <Link

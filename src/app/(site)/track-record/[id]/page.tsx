@@ -108,7 +108,7 @@ export default async function ProjectsPropertyPage({
       <div className="bg-bg-surface">
         <nav
           aria-label="Breadcrumb"
-          className="mx-auto w-full max-w-6xl px-6 py-6 text-xs uppercase tracking-[0.24em] text-ink/55 sm:px-8 lg:px-10"
+          className="mx-auto w-full max-w-[1280px] px-6 py-6 text-xs uppercase tracking-[0.24em] text-ink/55 sm:px-8 lg:px-10"
         >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
@@ -135,7 +135,7 @@ export default async function ProjectsPropertyPage({
       </div>
 
       <div className="relative w-full px-4 sm:px-6 lg:px-10">
-        <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[var(--radius-card)] bg-rc-navy/10 shadow-md">
+        <div className="relative mx-auto w-full max-w-[1280px] overflow-hidden rounded-[var(--radius-card)] bg-rc-navy/10 shadow-md">
           <div className="relative aspect-[16/9] sm:aspect-[2/1]">
             <Image
               src={media.src}
