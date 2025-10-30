@@ -73,11 +73,11 @@ export function LogosCarousel({
     let timeoutId: number | null = null;
 
     const clearTimers = () => {
-      if (intervalId) {
+      if (intervalId !== null) {
         window.clearInterval(intervalId);
         intervalId = null;
       }
-      if (timeoutId) {
+      if (timeoutId !== null) {
         window.clearTimeout(timeoutId);
         timeoutId = null;
       }
@@ -85,6 +85,7 @@ export function LogosCarousel({
 
     const scheduleAdvance = () => {
       clearTimers();
+
       intervalId = window.setInterval(() => {
         firstRowApi.scrollNext();
         timeoutId = window.setTimeout(() => {
@@ -93,35 +94,40 @@ export function LogosCarousel({
       }, autoAdvanceInterval);
     };
 
+    const stopAutoplay = () => {
+      clearTimers();
+    };
+
+    const resumeAutoplay = () => {
+      scheduleAdvance();
+    };
+
     scheduleAdvance();
 
-    const stopAutoplay = () => clearTimers();
-    const resumeAutoplay = () => scheduleAdvance();
+    const firstRootNode = firstRowApi.rootNode();
+    const secondRootNode = secondRowApi.rootNode();
 
-    const removeFirstPointerDown = firstRowApi.on("pointerDown", stopAutoplay);
-    const removeSecondPointerDown = secondRowApi.on(
-      "pointerDown",
-      stopAutoplay
-    );
-    const removeFirstPointerUp = firstRowApi.on("pointerUp", resumeAutoplay);
-    const removeSecondPointerUp = secondRowApi.on("pointerUp", resumeAutoplay);
-    const removeFirstPointerLeave = firstRowApi.on(
-      "pointerLeave",
-      resumeAutoplay
-    );
-    const removeSecondPointerLeave = secondRowApi.on(
-      "pointerLeave",
-      resumeAutoplay
-    );
+    firstRowApi.on("pointerDown", stopAutoplay);
+    secondRowApi.on("pointerDown", stopAutoplay);
+    firstRowApi.on("pointerUp", resumeAutoplay);
+    secondRowApi.on("pointerUp", resumeAutoplay);
+
+    firstRootNode.addEventListener("pointerenter", stopAutoplay);
+    secondRootNode.addEventListener("pointerenter", stopAutoplay);
+    firstRootNode.addEventListener("pointerleave", resumeAutoplay);
+    secondRootNode.addEventListener("pointerleave", resumeAutoplay);
 
     return () => {
       clearTimers();
-      removeFirstPointerDown();
-      removeSecondPointerDown();
-      removeFirstPointerUp();
-      removeSecondPointerUp();
-      removeFirstPointerLeave();
-      removeSecondPointerLeave();
+      firstRowApi.off("pointerDown", stopAutoplay);
+      secondRowApi.off("pointerDown", stopAutoplay);
+      firstRowApi.off("pointerUp", resumeAutoplay);
+      secondRowApi.off("pointerUp", resumeAutoplay);
+
+      firstRootNode.removeEventListener("pointerenter", stopAutoplay);
+      secondRootNode.removeEventListener("pointerenter", stopAutoplay);
+      firstRootNode.removeEventListener("pointerleave", resumeAutoplay);
+      secondRootNode.removeEventListener("pointerleave", resumeAutoplay);
     };
   }, [firstRowApi, secondRowApi, autoAdvanceInterval, prefersReducedMotion]);
 
