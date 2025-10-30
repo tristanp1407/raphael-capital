@@ -112,8 +112,6 @@ export function LogosCarousel({
     firstRowApi.on("pointerUp", resumeAutoplay);
     secondRowApi.on("pointerUp", resumeAutoplay);
 
-    firstRootNode.addEventListener("pointerenter", stopAutoplay);
-    secondRootNode.addEventListener("pointerenter", stopAutoplay);
     firstRootNode.addEventListener("pointerleave", resumeAutoplay);
     secondRootNode.addEventListener("pointerleave", resumeAutoplay);
 
@@ -124,8 +122,6 @@ export function LogosCarousel({
       firstRowApi.off("pointerUp", resumeAutoplay);
       secondRowApi.off("pointerUp", resumeAutoplay);
 
-      firstRootNode.removeEventListener("pointerenter", stopAutoplay);
-      secondRootNode.removeEventListener("pointerenter", stopAutoplay);
       firstRootNode.removeEventListener("pointerleave", resumeAutoplay);
       secondRootNode.removeEventListener("pointerleave", resumeAutoplay);
     };
