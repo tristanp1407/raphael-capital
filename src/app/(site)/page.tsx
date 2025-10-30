@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Hero } from "@/components/hero";
 import { Section } from "@/components/section";
 import { PropertyGrid } from "@/components/property-grid";
-import { BrandsGrid } from "@/components/brands-grid";
-import { featuredProperties, brands } from "@/lib/data";
+import { LogosCarousel } from "@/components/logos-carousel";
+import { featuredProperties, brands as brandLogos } from "@/lib/data";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function HomePage() {
         className="bg-bg-faint"
         containerClassName="gap-16"
       >
-        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,_1.6fr)_minmax(0,_1fr)]">
+        <div className="flex flex-col gap-12">
           <div className="space-y-6 text-base text-ink/75">
             <p>
               Raphael Capital is a privately held investment partnership led by
@@ -56,7 +56,7 @@ export default function HomePage() {
               Discover our story →
             </Link>
           </div>
-          <BrandsGrid brands={brands.slice(0, 8)} />
+          <LogosCarousel logos={brandLogos} />
         </div>
       </Section>
       <CallToActionBanner

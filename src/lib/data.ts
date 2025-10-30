@@ -209,25 +209,30 @@ export function getPropertyPlaceholderById(id: string) {
 
 export const propertySlugs = allProperties.map((property) => property.id);
 
-export const brands = [
-  "Wendy’s",
-  "Optical Express",
-  "Boots",
-  "Greggs",
-  "Bill's",
-  "Rohan",
-  "Dune",
-  "Taco Bell",
-  "Space NK",
-  "Costa",
-  "JoJo Maman Bébé",
-  "Marks & Spencer",
-  "WHSmith",
-  "Santander",
-  "Bank of Scotland",
-  "Hotel Chocolat",
-  "B&M",
-  "GAME",
+export type BrandLogo = {
+  name: string;
+  image: string;
+};
+
+export const brands: readonly BrandLogo[] = [
+  { name: "B&M", image: "b&m.png" },
+  { name: "Bank of Scotland", image: "bank of scotland.png" },
+  { name: "Bill's", image: "bills.png" },
+  { name: "Boots", image: "boots.png" },
+  { name: "Costa", image: "costa.png" },
+  { name: "Dune", image: "dune.png" },
+  { name: "Greggs", image: "greggs.png" },
+  { name: "Hotel Chocolat", image: "hotelchocolat.png" },
+  { name: "JoJo Maman Bébé", image: "jojomama.png" },
+  { name: "Marks & Spencer", image: "m&s.png" },
+  { name: "McDonald's", image: "mcdonalds.png" },
+  { name: "Optical Express", image: "opticalexpress.png" },
+  { name: "Rohan", image: "rohan.png" },
+  { name: "Santander", image: "santander.png" },
+  { name: "Space NK", image: "spaceuk.png" },
+  { name: "Taco Bell", image: "tacobell.png" },
+  { name: "Wendy's", image: "wendy.png" },
+  { name: "WHSmith", image: "whsmith.png" },
 ] as const;
 
 export const contacts = [
