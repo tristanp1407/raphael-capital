@@ -30,8 +30,7 @@ export default async function HomePage() {
       name: prop.name,
       slug: prop.id,
       location: prop.location,
-      year: prop.year,
-      sector: prop.sector,
+      sector: null, // Static data doesn't have sector objects, set to null
       summary: prop.summary,
       status: prop.status,
       featured: prop.featured || false,

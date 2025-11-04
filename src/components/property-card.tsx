@@ -28,13 +28,13 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
   // Get image from Sanity or use placeholder
   const hasHeroImage = isProject && property.heroImage;
   const imageUrl = hasHeroImage
-    ? urlFor(property.heroImage.asset).width(720).height(480).url()
+    ? urlFor(property.heroImage!.asset).width(720).height(480).url()
     : getPropertyPlaceholderByIndex(index).src;
   const imageAlt = hasHeroImage
-    ? property.heroImage.alt
+    ? property.heroImage!.alt
     : getPropertyPlaceholderByIndex(index).alt;
   const imageLqip = hasHeroImage
-    ? property.heroImage.asset.metadata.lqip
+    ? property.heroImage!.asset.metadata.lqip
     : getPropertyPlaceholderByIndex(index).blurDataURL;
 
   const statusLabel = property.status === "current" ? "Current" : "Previous";

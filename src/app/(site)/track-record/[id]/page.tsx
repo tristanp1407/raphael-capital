@@ -160,7 +160,7 @@ export default async function ProjectsPropertyPage({
       name: property.name,
       slug: property.id,
       location: property.location,
-      sector: property.sector,
+      sector: null,
       summary: property.summary,
       status: property.status,
       featured: property.featured || false,
