@@ -4,6 +4,9 @@ import { Hero } from "@/components/hero";
 import { Section } from "@/components/section";
 import { PropertyGrid } from "@/components/property-grid";
 import { LogosCarousel } from "@/components/logos-carousel";
+import { client } from "@/lib/sanity/client";
+import { featuredProjectsQuery } from "@/lib/sanity/queries";
+import type { Project } from "@/types/sanity";
 import { featuredProperties, brands as brandLogos } from "@/lib/data";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
 
@@ -13,7 +16,27 @@ export const metadata: Metadata = {
     "Raphael Capital is a privately owned UK property investment company acquiring and repositioning assets across retail, mixed-use, residential, office and industrial sectors.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  let projects: Project[] = [];
+
+  try {
+    // Fetch featured projects from Sanity
+    projects = await client.fetch(featuredProjectsQuery);
+  } catch (error) {
+    console.error("Failed to fetch featured projects from Sanity:", error);
+    // Fallback to static data if Sanity fetch fails
+    projects = featuredProperties.map((prop) => ({
+      _id: prop.id,
+      name: prop.name,
+      slug: prop.id,
+      location: prop.location,
+      year: prop.year,
+      sector: prop.sector,
+      summary: prop.summary,
+      status: prop.status,
+      featured: prop.featured || false,
+    }));
+  }
   return (
     <div className="flex flex-col">
       <Hero />
@@ -28,7 +51,7 @@ export default function HomePage() {
           underpinned by forensic due diligence, discreet execution and
           long-term value creation.
         </p>
-        <PropertyGrid properties={featuredProperties} />
+        <PropertyGrid properties={projects} />
       </Section>
       <Section
         id="about-overview"

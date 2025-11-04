@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { buttonClasses } from "@/components/button";
-import { Property, PropertyStatus, Sector } from "@/lib/data";
+import { Property, PropertyStatus } from "@/lib/data";
+import type { Project, ProjectStatus, Sector } from "@/types/sanity";
 import { Filters } from "@/components/filters";
 import { PropertyGrid } from "@/components/property-grid";
 
@@ -10,20 +11,6 @@ const ALL_VALUE = "all";
 const DEFAULT_VISIBLE_ROWS = 2;
 const GRID_COLUMNS = 3;
 const INITIAL_LIMIT = DEFAULT_VISIBLE_ROWS * GRID_COLUMNS;
-
-const sectorOrder: Sector[] = [
-  "Retail",
-  "Office",
-  "Industrial",
-  "Mixed Use",
-  "Residential",
-  "Development",
-];
-
-const filterOptions = [
-  { label: "All", value: ALL_VALUE },
-  ...sectorOrder.map((sector) => ({ label: sector, value: sector })),
-];
 
 const statusToggleOptions: { label: string; value: PropertyStatus | typeof ALL_VALUE }[] =
   [
@@ -33,19 +20,73 @@ const statusToggleOptions: { label: string; value: PropertyStatus | typeof ALL_V
   ];
 
 type TrackRecordViewProps = {
-  properties: Property[];
+  properties: (Property | Project)[];
+  sectors?: Sector[];
 };
 
-export function TrackRecordView({ properties }: TrackRecordViewProps) {
+export function TrackRecordView({ properties, sectors = [] }: TrackRecordViewProps) {
   const [selectedSector, setSelectedSector] = useState<string>(ALL_VALUE);
   const [selectedStatus, setSelectedStatus] =
     useState<PropertyStatus | typeof ALL_VALUE>(ALL_VALUE);
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_LIMIT);
 
+  // Build filter options from sectors that have projects
+  const filterOptions = useMemo(() => {
+    const options = [{ label: "All", value: ALL_VALUE }];
+
+    // Get unique sectors that are actually used in projects
+    const usedSectors = new Set<string>();
+    properties.forEach((property) => {
+      const sectorName = typeof property.sector === 'string'
+        ? property.sector
+        : property.sector?.name;
+      if (sectorName) {
+        usedSectors.add(sectorName);
+      }
+    });
+
+    if (sectors.length > 0) {
+      // Use Sanity sectors, but only include those with projects
+      sectors
+        .filter((sector) => usedSectors.has(sector.name))
+        .forEach((sector) => {
+          options.push({
+            label: sector.name,
+            value: sector.name
+          });
+        });
+    } else {
+      // Fallback: only show sectors that exist in the projects
+      const fallbackSectors = [
+        "Retail",
+        "Office",
+        "Industrial",
+        "Mixed Use",
+        "Residential",
+        "Development",
+      ];
+      fallbackSectors
+        .filter((sector) => usedSectors.has(sector))
+        .forEach((sector) => {
+          options.push({
+            label: sector,
+            value: sector
+          });
+        });
+    }
+
+    return options;
+  }, [sectors, properties]);
+
   const filtered = useMemo(() => {
     return properties.filter((property) => {
+      // Handle both Property (with string sector) and Project (with Sector object)
+      const propertySector = typeof property.sector === 'string'
+        ? property.sector
+        : (property.sector?.name || '');
+
       const sectorMatch =
-        selectedSector === ALL_VALUE || property.sector === selectedSector;
+        selectedSector === ALL_VALUE || propertySector === selectedSector;
       const statusMatch =
         selectedStatus === ALL_VALUE || property.status === selectedStatus;
       return sectorMatch && statusMatch;

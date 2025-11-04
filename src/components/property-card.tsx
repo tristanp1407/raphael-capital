@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { playfair } from "@/app/fonts";
 import { Property, getPropertyPlaceholderByIndex } from "@/lib/data";
+import type { Project } from "@/types/sanity";
+import { urlFor } from "@/lib/sanity/image";
 
 const gradients = [
   "from-rc-indigo/35 to-rc-navy/55",
@@ -12,13 +14,29 @@ const gradients = [
 ];
 
 type PropertyCardProps = {
-  property: Property;
+  property: Property | Project;
   index?: number;
 };
 
 export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
   const overlay = gradients[index % gradients.length];
-  const media = getPropertyPlaceholderByIndex(index);
+
+  // Check if it's a Sanity project (has _id) or legacy property (has id)
+  const isProject = '_id' in property;
+  const slug = isProject ? property.slug : property.id;
+
+  // Get image from Sanity or use placeholder
+  const hasHeroImage = isProject && property.heroImage;
+  const imageUrl = hasHeroImage
+    ? urlFor(property.heroImage.asset).width(720).height(480).url()
+    : getPropertyPlaceholderByIndex(index).src;
+  const imageAlt = hasHeroImage
+    ? property.heroImage.alt
+    : getPropertyPlaceholderByIndex(index).alt;
+  const imageLqip = hasHeroImage
+    ? property.heroImage.asset.metadata.lqip
+    : getPropertyPlaceholderByIndex(index).blurDataURL;
+
   const statusLabel = property.status === "current" ? "Current" : "Previous";
   const statusStyles =
     property.status === "current"
@@ -27,21 +45,21 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
 
   return (
     <Link
-      href={`/track-record/${property.id}`}
+      href={`/track-record/${slug}`}
       className="group block h-full"
       aria-label={`View ${property.name} in ${property.location}`}
     >
       <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border-subtle/60 bg-white/90 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-card">
         <div className="relative h-56 overflow-hidden">
           <Image
-            src={media.src}
-            alt={media.alt}
+            src={imageUrl}
+            alt={imageAlt}
             fill
             priority={index < 3}
             sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 100vw"
             className="object-cover transition duration-500 group-hover:scale-105"
             placeholder="blur"
-            blurDataURL={media.blurDataURL}
+            blurDataURL={imageLqip}
           />
           <div
             className={`absolute inset-0 bg-gradient-to-br ${overlay} mix-blend-multiply`}
@@ -60,21 +78,16 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           </div>
           <div className="absolute inset-0 flex items-end p-6">
             <p className="text-xs uppercase tracking-[0.28em] text-white/90">
-              {property.sector}
+              {typeof property.sector === 'string' ? property.sector : (property.sector?.name || 'Unknown')}
             </p>
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-4 p-6">
-          <div className="flex items-baseline justify-between gap-4">
-            <h3
-              className={`${playfair.className} text-xl font-black text-inkStrong`}
-            >
-              {property.name}
-            </h3>
-            <span className="text-sm font-medium text-ink/65">
-              {property.year}
-            </span>
-          </div>
+          <h3
+            className={`${playfair.className} text-xl font-black text-inkStrong`}
+          >
+            {property.name}
+          </h3>
           <p className="text-sm text-ink/75">{property.summary}</p>
           <p className="mt-auto text-xs font-medium uppercase tracking-[0.18em] text-ink/55">
             {property.location}

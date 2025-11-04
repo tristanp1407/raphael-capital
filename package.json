@@ -5,17 +5,28 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "migrate": "tsx scripts/migrate-to-sanity.ts",
+    "migrate:sectors": "tsx scripts/migrate-sectors.ts",
+    "fix:sectors": "tsx scripts/fix-project-sectors.ts"
   },
   "dependencies": {
+    "@sanity/client": "^7.12.1",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/vision": "^4.13.0",
+    "dotenv": "^17.2.3",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.24",
     "next": "15.5.5",
+    "next-sanity": "^11.6.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "sanity": "^4.13.0",
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
+    "@sanity/types": "^4.13.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
