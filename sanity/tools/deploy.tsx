@@ -1,16 +1,17 @@
 import { definePlugin } from 'sanity'
 import { RocketIcon } from '@sanity/icons'
 
+// Access environment variable - must use NEXT_PUBLIC_ prefix for browser access
+const DEPLOY_HOOK = process.env.NEXT_PUBLIC_VERCEL_DEPLOY_HOOK
+
 export const deployTool = definePlugin({
   name: 'deploy-tool',
   studio: {
     components: {
       toolMenu: () => {
         const handleDeploy = async () => {
-          const deployHook = process.env.SANITY_STUDIO_VERCEL_DEPLOY_HOOK
-
-          if (!deployHook) {
-            alert('Deploy hook not configured. Please add SANITY_STUDIO_VERCEL_DEPLOY_HOOK to your environment variables.')
+          if (!DEPLOY_HOOK) {
+            alert('Deploy hook not configured. Please add NEXT_PUBLIC_VERCEL_DEPLOY_HOOK to your .env.local file and restart the dev server.')
             return
           }
 
@@ -18,7 +19,7 @@ export const deployTool = definePlugin({
           if (!confirmed) return
 
           try {
-            const response = await fetch(deployHook, {
+            const response = await fetch(DEPLOY_HOOK, {
               method: 'POST',
             })
 
