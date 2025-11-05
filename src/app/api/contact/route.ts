@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email via Resend
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "victor.levy@raphaelcapital.co.uk",
       replyTo: email,
@@ -61,7 +61,11 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ success: true, id: data.id }, { status: 200 });
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return NextResponse.json({ success: true, id: data?.id }, { status: 200 });
   } catch (error) {
     console.error("Failed to send email:", error);
     return NextResponse.json(
