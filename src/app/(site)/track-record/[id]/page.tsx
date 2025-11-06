@@ -160,7 +160,7 @@ export default async function ProjectsPropertyPage({
       name: property.name,
       slug: property.id,
       location: property.location,
-      sector: null,
+      sectors: [],
       summary: property.summary,
       status: property.status,
       featured: property.featured || false,
@@ -192,7 +192,7 @@ export default async function ProjectsPropertyPage({
       addressLocality: project.location,
       addressCountry: "GB",
     },
-    category: typeof project.sector === 'string' ? project.sector : (project.sector?.name || 'Unknown'),
+    category: project.sectors?.map(s => s.name) || [],
     image: imageUrl,
     seller: {
       "@type": "Organization",
@@ -213,28 +213,30 @@ export default async function ProjectsPropertyPage({
 
   const allProjects = await getSuggestedProjects();
 
-  // Get the current project's sector name
-  const currentSectorName = typeof project.sector === 'string'
-    ? project.sector
-    : project.sector?.name;
+  // Get the current project's sector names
+  const currentSectorNames = project.sectors?.map(s => s.name) || [];
 
   // Smart suggestion algorithm with prioritization:
-  // 1. Same sector, same status (current/previous)
-  // 2. Same sector, different status
-  // 3. Different sector, same status
-  // 4. Any other project
+  // 1. Projects with overlapping sectors (more overlap = higher score)
+  // 2. Same status (current/previous)
+  // 3. Featured projects
   const related = allProjects
     .filter((item) => item.slug !== project.slug) // Exclude current project
     .map((item) => {
-      const itemSectorName = typeof item.sector === 'string'
-        ? item.sector
-        : item.sector?.name;
+      const itemSectorNames = item.sectors?.map(s => s.name) || [];
 
       let score = 0;
 
-      // Same sector gets highest priority
-      if (itemSectorName === currentSectorName) {
+      // Check if ANY sectors overlap
+      const overlappingSectors = itemSectorNames.filter(name =>
+        currentSectorNames.includes(name)
+      );
+
+      if (overlappingSectors.length > 0) {
+        // Base score for having common sectors
         score += 100;
+        // Bonus for each additional overlapping sector
+        score += (overlappingSectors.length - 1) * 20;
       }
 
       // Same status gets medium priority
@@ -301,9 +303,13 @@ export default async function ProjectsPropertyPage({
       >
         <div className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.28em]">
-            <span className="font-semibold text-ink/55">
-              {typeof project.sector === 'string' ? project.sector : (project.sector?.name || 'Unknown')}
-            </span>
+            {project.sectors && project.sectors.length > 0 ? (
+              project.sectors.map((sector) => (
+                <span key={sector._id} className="font-semibold text-ink/55">
+                  {sector.name}
+                </span>
+              ))
+            ) : null}
             <span
               className={`rounded-full px-3 py-1 font-semibold ${
                 project.status === "current"

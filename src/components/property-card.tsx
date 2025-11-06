@@ -78,7 +78,9 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           </div>
           <div className="absolute inset-0 flex items-end p-6">
             <p className="text-xs uppercase tracking-[0.28em] text-white/90">
-              {typeof property.sector === 'string' ? property.sector : (property.sector?.name || 'Unknown')}
+              {Array.isArray(property.sectors) && property.sectors.length > 0
+                ? property.sectors.map(s => s.name).join(' • ')
+                : 'Unknown'}
             </p>
           </div>
         </div>

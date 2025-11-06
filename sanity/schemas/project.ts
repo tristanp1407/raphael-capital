@@ -29,11 +29,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'sector',
-      title: 'Sector',
-      type: 'reference',
-      to: [{ type: 'sector' }],
-      validation: (Rule) => Rule.required(),
+      name: 'sectors',
+      title: 'Sectors',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'sector' }] }],
+      validation: (Rule) => Rule.required().min(1),
+      description: 'Select one or more sectors for this project',
     }),
     defineField({
       name: 'summary',

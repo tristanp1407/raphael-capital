@@ -32,12 +32,7 @@ export default async function ProjectsPage() {
       name: prop.name,
       slug: prop.id,
       location: prop.location,
-      sector: {
-        _id: prop.sector,
-        name: prop.sector,
-        slug: prop.sector.toLowerCase().replace(/\s+/g, '-'),
-        order: 0,
-      },
+      sectors: [],
       summary: prop.summary,
       status: prop.status,
       featured: prop.featured || false,

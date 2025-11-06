@@ -8,6 +8,7 @@
     "start": "next start",
     "migrate": "tsx scripts/migrate-to-sanity.ts",
     "migrate:sectors": "tsx scripts/migrate-sectors.ts",
+    "migrate:sectors-array": "tsx scripts/migrate-sectors-to-array.ts",
     "fix:sectors": "tsx scripts/fix-project-sectors.ts"
   },
   "dependencies": {

@@ -31,7 +31,7 @@ export interface Project {
   name: string
   slug: string
   location: string
-  sector: Sector | null
+  sectors: Sector[]
   summary: string
   status: ProjectStatus
   featured: boolean

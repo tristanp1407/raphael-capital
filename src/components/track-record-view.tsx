@@ -37,11 +37,12 @@ export function TrackRecordView({ properties, sectors = [] }: TrackRecordViewPro
     // Get unique sectors that are actually used in projects
     const usedSectors = new Set<string>();
     properties.forEach((property) => {
-      const sectorName = typeof property.sector === 'string'
-        ? property.sector
-        : property.sector?.name;
-      if (sectorName) {
-        usedSectors.add(sectorName);
+      if (Array.isArray(property.sectors)) {
+        property.sectors.forEach(sector => {
+          if (sector?.name) {
+            usedSectors.add(sector.name);
+          }
+        });
       }
     });
 
@@ -80,13 +81,16 @@ export function TrackRecordView({ properties, sectors = [] }: TrackRecordViewPro
 
   const filtered = useMemo(() => {
     return properties.filter((property) => {
-      // Handle both Property (with string sector) and Project (with Sector object)
-      const propertySector = typeof property.sector === 'string'
-        ? property.sector
-        : (property.sector?.name || '');
+      // Get all sector names for this property
+      const propertySectors = Array.isArray(property.sectors)
+        ? property.sectors.map(s => s.name)
+        : [];
 
+      // Match if ANY sector matches the selected filter (OR logic)
       const sectorMatch =
-        selectedSector === ALL_VALUE || propertySector === selectedSector;
+        selectedSector === ALL_VALUE ||
+        propertySectors.includes(selectedSector);
+
       const statusMatch =
         selectedStatus === ALL_VALUE || property.status === selectedStatus;
       return sectorMatch && statusMatch;

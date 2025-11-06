@@ -17,7 +17,7 @@ export const allProjectsQuery = groq`
     name,
     "slug": slug.current,
     location,
-    sector->{
+    sectors[]->{
       _id,
       name,
       "slug": slug.current
@@ -46,7 +46,7 @@ export const featuredProjectsQuery = groq`
     name,
     "slug": slug.current,
     location,
-    sector->{
+    sectors[]->{
       _id,
       name,
       "slug": slug.current
@@ -75,7 +75,7 @@ export const projectBySlugQuery = groq`
     name,
     "slug": slug.current,
     location,
-    sector->{
+    sectors[]->{
       _id,
       name,
       "slug": slug.current
@@ -123,7 +123,7 @@ export const currentProjectsQuery = groq`
     name,
     "slug": slug.current,
     location,
-    sector->{
+    sectors[]->{
       _id,
       name,
       "slug": slug.current
@@ -152,7 +152,7 @@ export const previousProjectsQuery = groq`
     name,
     "slug": slug.current,
     location,
-    sector->{
+    sectors[]->{
       _id,
       name,
       "slug": slug.current
