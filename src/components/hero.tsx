@@ -4,7 +4,23 @@ import { playfair } from "@/app/fonts";
 import Link from "next/link";
 import { buttonClasses } from "@/components/button";
 
-export function Hero() {
+interface HeroProps {
+  heading?: string;
+  subheading?: string;
+  cta1Text?: string;
+  cta1Href?: string;
+  cta2Text?: string;
+  cta2Href?: string;
+}
+
+export function Hero({
+  heading = "Twenty-five years of investment with certainty and discretion.",
+  subheading = "A private investment house specialising in prime UK real estate. We structure, acquire and steward assets with quiet conviction for family offices and institutional partners.",
+  cta1Text = "View Projects",
+  cta1Href = "/track-record",
+  cta2Text = "Requirements",
+  cta2Href = "/requirements",
+}: HeroProps) {
   return (
     <section className="relative isolate overflow-hidden py-24 sm:py-40">
       <div className="absolute inset-0 -z-10 gradient-veil" aria-hidden />
@@ -14,28 +30,26 @@ export function Hero() {
           <h1
             className={`${playfair.className} mt-4 text-4xl font-black leading-tight text-inkStrong sm:text-5xl lg:text-6xl`}
           >
-            Twenty-five years of investment with certainty and discretion.
+            {heading}
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-ink/80">
-            A private investment house specialising in prime UK real estate. We
-            structure, acquire and steward assets with quiet conviction for
-            family offices and institutional partners.
+            {subheading}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6 max-[630px]:flex-col max-[630px]:items-stretch max-[630px]:gap-4 [&>a]:max-w-[220px] [&>a]:flex-1 [&>a]:sm:flex-initial">
             <Link
-              href="/track-record"
+              href={cta1Href}
               className={`${buttonClasses()} relative isolate overflow-hidden shadow-md hover:-translate-y-0.5 before:absolute before:inset-0 before:-z-10 before:translate-x-[-30%] before:bg-gradient-to-r before:from-white/20 before:via-white/5 before:to-transparent before:opacity-0 before:transition before:duration-500 before:content-[''] hover:before:opacity-100`}
             >
-              <span className="text-white">View Projects</span>
+              <span className="text-white">{cta1Text}</span>
             </Link>
             <Link
-              href="/requirements"
+              href={cta2Href}
               className={`${buttonClasses({
                 variant: "secondary",
               })} group hover:-translate-y-0.5`}
             >
               <span className="text-rc-navy group-hover:text-white group-focus-visible:text-white">
-                Requirements
+                {cta2Text}
               </span>
             </Link>
           </div>

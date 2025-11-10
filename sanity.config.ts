@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './sanity/schemas'
 import { deployTool } from './sanity/tools/deploy'
+import { structure } from './sanity/structure'
 
 export default defineConfig({
   name: 'default',
@@ -13,7 +14,7 @@ export default defineConfig({
 
   basePath: '/studio',
 
-  plugins: [structureTool(), visionTool(), deployTool()],
+  plugins: [structureTool({ structure }), visionTool(), deployTool()],
 
   schema: {
     types: schemaTypes,

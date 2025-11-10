@@ -5,87 +5,100 @@ import { Section } from "@/components/section";
 import { PropertyGrid } from "@/components/property-grid";
 import { LogosCarousel } from "@/components/logos-carousel";
 import { client } from "@/lib/sanity/client";
-import { featuredProjectsQuery } from "@/lib/sanity/queries";
-import type { Project } from "@/types/sanity";
-import { featuredProperties, brands as brandLogos } from "@/lib/data";
+import { featuredProjectsQuery, homePageQuery, allBrandLogosQuery } from "@/lib/sanity/queries";
+import type { Project, HomePage as HomePageContent, BrandLogo } from "@/types/sanity";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
 
-export const metadata: Metadata = {
-  title: "Raphael Capital | Private Property Investment & Development",
-  description:
-    "Raphael Capital is a privately owned UK property investment company acquiring and repositioning assets across retail, mixed-use, residential, office and industrial sectors.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const pageContent = await client.fetch(homePageQuery);
+    if (pageContent) {
+      return {
+        title: pageContent.seoTitle,
+        description: pageContent.seoDescription,
+      };
+    }
+  } catch (error) {
+    console.error("Failed to fetch page metadata:", error);
+  }
+
+  // Fallback metadata
+  return {
+    title: "Raphael Capital | Private Property Investment & Development",
+    description:
+      "Raphael Capital is a privately owned UK property investment company acquiring and repositioning assets across retail, mixed-use, residential, office and industrial sectors.",
+  };
+}
 
 export default async function HomePage() {
   let projects: Project[] = [];
+  let pageContent: HomePageContent | null = null;
+  let brands: BrandLogo[] = [];
 
   try {
-    // Fetch featured projects from Sanity
-    projects = await client.fetch(featuredProjectsQuery);
+    // Fetch all data in parallel
+    const [projectsData, pageData, brandsData] = await Promise.all([
+      client.fetch(featuredProjectsQuery),
+      client.fetch(homePageQuery),
+      client.fetch(allBrandLogosQuery),
+    ]);
+
+    projects = projectsData;
+    pageContent = pageData;
+    brands = brandsData;
   } catch (error) {
-    console.error("Failed to fetch featured projects from Sanity:", error);
-    // Fallback to static data if Sanity fetch fails
-    projects = featuredProperties.map((prop) => ({
-      _id: prop.id,
-      name: prop.name,
-      slug: prop.id,
-      location: prop.location,
-      sectors: [],
-      summary: prop.summary,
-      status: prop.status,
-      featured: prop.featured || false,
-    }));
+    console.error("Failed to fetch data from Sanity:", error);
+  }
+
+  if (!pageContent) {
+    return <div className="p-10 text-center text-red-600">Home page content not found in CMS</div>;
   }
   return (
     <div className="flex flex-col">
-      <Hero />
+      <Hero
+        heading={pageContent.heroHeading}
+        subheading={pageContent.heroSubheading}
+        cta1Text={pageContent.heroCta1Text}
+        cta1Href={pageContent.heroCta1Href}
+        cta2Text={pageContent.heroCta2Text}
+        cta2Href={pageContent.heroCta2Href}
+      />
       <Section
         id="featured-properties"
-        headline="Selected mandates"
+        headline={pageContent.featuredHeadline}
         containerClassName="gap-14"
       >
         <p className="max-w-3xl text-base text-ink/75">
-          We structure and steward complex, off-market transactions on behalf of
-          family offices and institutional co-investors. Each mandate is
-          underpinned by forensic due diligence, discreet execution and
-          long-term value creation.
+          {pageContent.featuredBodyText}
         </p>
         <PropertyGrid properties={projects} />
       </Section>
       <Section
         id="about-overview"
-        headline="A discreet partner for generational capital"
+        headline={pageContent.aboutHeadline}
         className="bg-bg-faint"
         containerClassName="gap-16"
       >
         <div className="flex flex-col gap-12">
           <div className="space-y-6 text-base text-ink/75">
-            <p>
-              Raphael Capital is a privately held investment partnership led by
-              the Levy family. From our headquarters in London, we originate and
-              manage a diversified portfolio spanning retail, office,
-              residential and mixed-use assets.
-            </p>
-            <p>
-              Our team pairs institutional discipline with a heritage mindset:
-              protecting capital, preserving the character of landmark
-              buildings and delivering resilient income for generations.
-            </p>
+            {pageContent.aboutParagraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
             <Link
               href="/about"
               className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[4px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
             >
-              Discover our story →
+              {pageContent.aboutLinkText}
             </Link>
           </div>
-          <LogosCarousel logos={brandLogos} />
+          <LogosCarousel logos={brands} />
         </div>
       </Section>
       <CallToActionBanner
         className="mt-0"
-        href="/track-record"
-        headline="Explore our previous and current projects"
-        subheadline="View Projects →"
+        href={pageContent.ctaBannerHref}
+        headline={pageContent.ctaBannerHeadline}
+        subheadline={pageContent.ctaBannerSubheadline}
       />
     </div>
   );

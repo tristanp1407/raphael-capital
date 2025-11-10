@@ -1,16 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { contacts } from "@/lib/data";
+import type { FooterContent, ContactInfo, TeamMember } from "@/types/sanity";
 
-const footerNavLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/track-record", label: "Projects" },
-  { href: "/requirements", label: "Requirements" },
-  { href: "/contact", label: "Contact" },
-] as const;
+interface SiteFooterProps {
+  footerContent: FooterContent | null;
+  contactInfo: ContactInfo | null;
+  teamMembers: TeamMember[];
+}
 
-export function SiteFooter() {
+export function SiteFooter({ footerContent, contactInfo, teamMembers }: SiteFooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -33,8 +31,7 @@ export function SiteFooter() {
               />
             </Link>
             <p className="max-w-xl text-sm text-ink/75">
-              Quietly originating, developing and managing institutional-grade
-              projects across the United Kingdom since 1999.
+              {footerContent?.tagline || "Quietly originating, developing and managing institutional-grade projects across the United Kingdom since 1999."}
             </p>
             <div className="flex flex-wrap gap-4 text-sm font-medium">
               <Link
@@ -53,16 +50,16 @@ export function SiteFooter() {
           </div>
           <div className="space-y-4">
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-ink/55">
-              Navigation
+              {footerContent?.quickLinksText || "Navigation"}
             </p>
             <ul className="grid gap-2 text-sm text-ink/75">
-              {footerNavLinks.map((link) => (
+              {footerContent?.quickLinks?.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     className="transition hover:text-inkStrong hover:underline hover:underline-offset-4"
                   >
-                    {link.label}
+                    {link.text}
                   </Link>
                 </li>
               ))}
@@ -73,23 +70,23 @@ export function SiteFooter() {
               Contact
             </p>
             <ul className="space-y-4 text-sm text-ink/75">
-              {contacts.slice(0, 2).map((contact) => (
-                <li key={contact.email} className="space-y-1">
+              {teamMembers.map((member) => (
+                <li key={member._id} className="space-y-1">
                   <p className="text-sm font-semibold text-inkStrong">
-                    {contact.name}
+                    {member.name}
                   </p>
                   <a
-                    href={`mailto:${contact.email}`}
+                    href={`mailto:${member.email}`}
                     className="block text-inkStrong underline decoration-[3px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
                   >
-                    {contact.email}
+                    {member.email}
                   </a>
-                  {contact.phone ? (
+                  {member.phone ? (
                     <a
-                      href={`tel:${contact.phone.replace(/\s+/g, "")}`}
+                      href={`tel:${member.phone.replace(/\s+/g, "")}`}
                       className="block text-inkStrong underline decoration-[3px] decoration-accent/40 underline-offset-6 transition hover:decoration-accent"
                     >
-                      {contact.phone}
+                      {member.phone}
                     </a>
                   ) : null}
                 </li>
@@ -101,16 +98,19 @@ export function SiteFooter() {
               Office
             </p>
             <address className="not-italic space-y-1 text-sm text-ink/75">
-              <p>Raphael Property Investment Co. Ltd.</p>
-              <p>18 Jacob’s Well Mews</p>
-              <p>London W1U 3DR</p>
+              {contactInfo?.companyLegalName && <p>{contactInfo.companyLegalName}</p>}
+              {contactInfo?.addressLine1 && <p>{contactInfo.addressLine1}</p>}
+              {contactInfo?.addressLine2 && <p>{contactInfo.addressLine2}</p>}
+              {contactInfo?.city && contactInfo?.postcode && (
+                <p>{contactInfo.city} {contactInfo.postcode}</p>
+              )}
             </address>
           </div>
         </div>
         <div className="flex flex-col gap-4 text-xs uppercase tracking-[0.24em] text-ink/60 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Raphael Capital. All rights reserved.</p>
+          <p>{footerContent?.copyrightText || `© ${year} Raphael Capital. All rights reserved.`}</p>
           <p className="text-ink/40">
-            Stewarding discreet UK real estate projects for partners.
+            {footerContent?.copyrightTagline || "Stewarding discreet UK real estate projects for partners."}
           </p>
         </div>
       </div>

@@ -164,6 +164,8 @@ export default async function ProjectsPropertyPage({
       summary: property.summary,
       status: property.status,
       featured: property.featured || false,
+      order: 0,
+      showInvestmentHighlights: true,
       heroImage: {
         asset: {
           _id: "placeholder",
@@ -176,6 +178,11 @@ export default async function ProjectsPropertyPage({
         alt: media.alt,
       },
     };
+  }
+
+  // After project is guaranteed to be non-null or we've returned notFound()
+  if (!project) {
+    notFound();
   }
 
   const imageUrl = project.heroImage?.asset.url || "";

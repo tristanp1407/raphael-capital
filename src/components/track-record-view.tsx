@@ -12,19 +12,29 @@ const DEFAULT_VISIBLE_ROWS = 2;
 const GRID_COLUMNS = 3;
 const INITIAL_LIMIT = DEFAULT_VISIBLE_ROWS * GRID_COLUMNS;
 
-const statusToggleOptions: { label: string; value: PropertyStatus | typeof ALL_VALUE }[] =
-  [
-    { label: "All", value: ALL_VALUE },
-    { label: "Current", value: "current" },
-    { label: "Previous", value: "previous" },
-  ];
-
 type TrackRecordViewProps = {
   properties: (Property | Project)[];
   sectors?: Sector[];
+  filterLabels?: {
+    all?: string;
+    current?: string;
+    previous?: string;
+  };
+  showMoreButtonText?: string;
 };
 
-export function TrackRecordView({ properties, sectors = [] }: TrackRecordViewProps) {
+export function TrackRecordView({
+  properties,
+  sectors = [],
+  filterLabels = {},
+  showMoreButtonText = "Show more properties",
+}: TrackRecordViewProps) {
+  const statusToggleOptions: { label: string; value: PropertyStatus | typeof ALL_VALUE }[] =
+    [
+      { label: filterLabels.all || "All", value: ALL_VALUE },
+      { label: filterLabels.current || "Current", value: "current" },
+      { label: filterLabels.previous || "Previous", value: "previous" },
+    ];
   const [selectedSector, setSelectedSector] = useState<string>(ALL_VALUE);
   const [selectedStatus, setSelectedStatus] =
     useState<PropertyStatus | typeof ALL_VALUE>(ALL_VALUE);
@@ -167,7 +177,7 @@ export function TrackRecordView({ properties, sectors = [] }: TrackRecordViewPro
             className={primaryButtonClasses}
             onClick={showMore}
           >
-            Show more properties
+            {showMoreButtonText}
           </button>
         ) : null}
       </div>

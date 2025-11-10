@@ -2,56 +2,64 @@ import type { Metadata } from "next";
 import { Section } from "@/components/section";
 import { TrackRecordView } from "@/components/track-record-view";
 import { client } from "@/lib/sanity/client";
-import { allProjectsQuery, allSectorsQuery } from "@/lib/sanity/queries";
-import type { Project, Sector } from "@/types/sanity";
-import { allProperties } from "@/lib/data";
+import { allProjectsQuery, allSectorsQuery, trackRecordPageQuery } from "@/lib/sanity/queries";
+import type { Project, Sector, TrackRecordPage as TrackRecordPageContent } from "@/types/sanity";
 
-export const metadata: Metadata = {
-  title: "Projects | Raphael Capital",
-  description:
-    "Review Raphael Capital's current and previous UK property projects across retail, office, industrial, residential, mixed-use and development sectors.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const pageContent = await client.fetch(trackRecordPageQuery);
+    if (pageContent) {
+      return {
+        title: pageContent.seoTitle,
+        description: pageContent.seoDescription,
+      };
+    }
+  } catch (error) {
+    console.error("Failed to fetch page metadata:", error);
+  }
+
+  // Fallback metadata
+  return {
+    title: "Projects | Raphael Capital",
+    description:
+      "Review Raphael Capital's current and previous UK property projects across retail, office, industrial, residential, mixed-use and development sectors.",
+  };
+}
 
 export default async function ProjectsPage() {
   let projects: Project[] = [];
   let sectors: Sector[] = [];
+  let pageContent: TrackRecordPageContent | null = null;
 
   try {
-    // Fetch projects and sectors from Sanity
-    const [projectsData, sectorsData] = await Promise.all([
+    // Fetch all data in parallel
+    const [projectsData, sectorsData, pageData] = await Promise.all([
       client.fetch(allProjectsQuery),
       client.fetch(allSectorsQuery),
+      client.fetch(trackRecordPageQuery),
     ]);
     projects = projectsData;
     sectors = sectorsData;
+    pageContent = pageData;
   } catch (error) {
     console.error("Failed to fetch data from Sanity:", error);
-    // Fallback to static data if Sanity fetch fails
-    projects = allProperties.map((prop) => ({
-      _id: prop.id,
-      name: prop.name,
-      slug: prop.id,
-      location: prop.location,
-      sectors: [],
-      summary: prop.summary,
-      status: prop.status,
-      featured: prop.featured || false,
-    }));
+  }
+
+  if (!pageContent) {
+    return <div className="p-10 text-center text-red-600">Track Record page content not found in CMS</div>;
   }
 
   return (
     <div className="flex flex-col">
       <Section
         id="projects-intro"
-        headline="Current and previous projects across sectors"
+        headline={pageContent.headline}
         className="bg-bg-faint"
         containerClassName="gap-6"
         padding="py-12 sm:py-16"
       >
         <p className="max-w-3xl text-base text-ink/75">
-          Our portfolio spans prime retail frontages, headquarters offices,
-          urban logistics and mixed-use regeneration. Each project is structured
-          to protect capital, unlock hidden value and deliver dependable income.
+          {pageContent.introText}
         </p>
       </Section>
       <Section
@@ -60,7 +68,16 @@ export default async function ProjectsPage() {
         padding="py-12 sm:py-16"
         animated={false}
       >
-        <TrackRecordView properties={projects} sectors={sectors} />
+        <TrackRecordView
+          properties={projects}
+          sectors={sectors}
+          filterLabels={{
+            all: pageContent.filterAllLabel,
+            current: pageContent.filterCurrentLabel,
+            previous: pageContent.filterPreviousLabel,
+          }}
+          showMoreButtonText={pageContent.showMoreButtonText}
+        />
       </Section>
     </div>
   );

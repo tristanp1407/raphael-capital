@@ -2,37 +2,56 @@ import type { Metadata } from "next";
 import { Section } from "@/components/section";
 import { BrandsGrid } from "@/components/brands-grid";
 import { playfair } from "@/app/fonts";
-import { brands } from "@/lib/data";
 import { AnimatedGridPattern } from "@/components/animated-grid-pattern";
+import { client } from "@/lib/sanity/client";
+import { aboutPageQuery, aboutTeamMembersQuery, allBrandLogosQuery } from "@/lib/sanity/queries";
+import type { AboutPage as AboutPageContent, TeamMember, BrandLogo } from "@/types/sanity";
 
-export const metadata: Metadata = {
-  title: "About Raphael Capital | UK Property Investment & Development",
-  description:
-    "Learn how Raphael Capital acquires and develops UK real estate with private capital, delivering discreet transactions across retail, office, mixed-use and residential sectors.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const pageContent = await client.fetch(aboutPageQuery);
+    if (pageContent) {
+      return {
+        title: pageContent.seoTitle,
+        description: pageContent.seoDescription,
+      };
+    }
+  } catch (error) {
+    console.error("Failed to fetch page metadata:", error);
+  }
 
-const teamMembers = [
-  {
-    name: "Victor Levy",
-    role: "Managing Partner",
-    bios: [
-      "Victor Levy is a qualified accountant with over 50 years of experience in the property sector.",
-      "He founded Raphael Property Investment Company in 1989 after a successful career at Arthur Andersen, where he led the International Banking and Financial Markets division.",
-      "More recently, Victor played a pivotal role in establishing Raphael Capital LLP, where he now oversees the partnership's investment strategy.",
-    ],
-  },
-  {
-    name: "Samuel Levy",
-    role: "Partner",
-    bios: [
-      "Samuel Levy is a Chartered Surveyor with over 8 years of experience in the real estate sector.",
-      "He began his career at a PLC housebuilder before joining CBRE's London Development team.",
-      "Across both roles, he has been involved in transactions exceeding GBP 600 million within the living development sector. Samuel now works closely alongside Victor to run the day-to-day operations of the partnership, focusing on deal origination and management to drive long-term growth.",
-    ],
-  },
-] as const;
+  // Fallback metadata
+  return {
+    title: "About Raphael Capital | UK Property Investment & Development",
+    description:
+      "Learn how Raphael Capital acquires and develops UK real estate with private capital, delivering discreet transactions across retail, office, mixed-use and residential sectors.",
+  };
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  let pageContent: AboutPageContent | null = null;
+  let teamMembers: TeamMember[] = [];
+  let brandLogos: BrandLogo[] = [];
+
+  try {
+    // Fetch all data in parallel
+    const [pageData, teamData, brandsData] = await Promise.all([
+      client.fetch(aboutPageQuery),
+      client.fetch(aboutTeamMembersQuery),
+      client.fetch(allBrandLogosQuery),
+    ]);
+
+    pageContent = pageData;
+    teamMembers = teamData;
+    brandLogos = brandsData;
+  } catch (error) {
+    console.error("Failed to fetch data from Sanity:", error);
+  }
+
+  if (!pageContent) {
+    return <div className="p-10 text-center text-red-600">About page content not found in CMS</div>;
+  }
+
   return (
     <div className="flex flex-col">
       <div className="relative overflow-hidden">
@@ -45,36 +64,27 @@ export default function AboutPage() {
         />
         <Section
           id="about-intro"
-          headline="Heritage stewardship, institutional discipline"
+          headline={pageContent.introHeadline}
           containerClassName="gap-10"
           className="relative z-10"
         >
           <div className="space-y-6 text-base text-ink/75">
-            <p>
-              For twenty-five years, Raphael Capital has stewarded private
-              family wealth into enduring real estate assets. Built on
-              discretion and conviction, our partnerships span household retail
-              brands, blue-chip offices and bespoke residential developments.
-            </p>
-            <p>
-              We deploy capital methodically, uncovering value through planning
-              expertise, design sensitivity and operational focus. Every asset
-              is curated to balance income security today with capital growth
-              for the next generation.
-            </p>
+            {pageContent.introParagraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
           </div>
         </Section>
       </div>
       <Section
         id="about-team"
-        headline="The Team"
+        headline={pageContent.teamHeadline}
         className="bg-bg-faint"
         containerClassName="gap-12"
       >
         <div className="grid gap-10 lg:grid-cols-2">
           {teamMembers.map((member) => (
             <article
-              key={member.name}
+              key={member._id}
               className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-border-subtle/70 bg-white/95 p-6 shadow-sm"
             >
               <div>
@@ -87,27 +97,23 @@ export default function AboutPage() {
                   {member.role}
                 </p>
               </div>
-              <div className="space-y-4 text-base leading-relaxed text-ink/75">
-                {member.bios.map((paragraph, index) => (
-                  <p key={`${member.name}-${index}`}>{paragraph}</p>
-                ))}
-              </div>
+              {member.bio && member.bio.length > 0 && (
+                <div className="space-y-4 text-base leading-relaxed text-ink/75">
+                  {member.bio.map((paragraph, index) => (
+                    <p key={`${member._id}-${index}`}>{paragraph}</p>
+                  ))}
+                </div>
+              )}
             </article>
           ))}
         </div>
       </Section>
       <Section
         id="about-brands"
-        headline="Trusted by leading brands"
+        headline={pageContent.brandsHeadline}
         containerClassName="gap-12"
       >
-        <BrandsGrid brands={brands} />
-      </Section>
-      <Section id="about-philosophy" className="bg-bg-faint">
-        <blockquote className="rounded-[var(--radius-card)] border border-border-subtle/70 bg-white/95 p-10 text-lg italic leading-relaxed text-ink/80 shadow-sm">
-          "We take responsibility for every detail -- from first conversation to
-          final handover. Our reputation is built on quiet delivery, not noise."
-        </blockquote>
+        <BrandsGrid brands={brandLogos} />
       </Section>
     </div>
   );

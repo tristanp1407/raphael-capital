@@ -66,6 +66,21 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Higher numbers appear first. Use 0 for default position. Example: 10 appears before 5 appears before 0',
+      validation: (Rule) => Rule.required().integer().min(0),
+      initialValue: 0,
+    }),
+    defineField({
+      name: 'showInvestmentHighlights',
+      title: 'Show Investment Highlights',
+      type: 'boolean',
+      description: 'Display the global investment highlights section on this project page',
+      initialValue: true,
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',
@@ -126,6 +141,11 @@ export default defineType({
     },
   },
   orderings: [
+    {
+      title: 'Display Order',
+      name: 'orderAsc',
+      by: [{ field: 'order', direction: 'asc' }],
+    },
     {
       title: 'Name, A-Z',
       name: 'nameAsc',
