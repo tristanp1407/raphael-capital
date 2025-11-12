@@ -9,7 +9,8 @@
     "migrate": "tsx scripts/migrate-to-sanity.ts",
     "migrate:sectors": "tsx scripts/migrate-sectors.ts",
     "migrate:sectors-array": "tsx scripts/migrate-sectors-to-array.ts",
-    "fix:sectors": "tsx scripts/fix-project-sectors.ts"
+    "fix:sectors": "tsx scripts/fix-project-sectors.ts",
+    "remove:investment-highlights": "tsx scripts/remove-investment-highlights-field.ts"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

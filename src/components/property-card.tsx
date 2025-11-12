@@ -13,6 +13,20 @@ const gradients = [
   "from-rc-graphite/35 to-rc-navy/55",
 ];
 
+// Truncate text to a maximum length, breaking at word boundaries
+function truncateText(text: string, maxLength: number = 150): string {
+  if (text.length <= maxLength) return text;
+
+  const truncated = text.slice(0, maxLength);
+  const lastSpaceIndex = truncated.lastIndexOf(' ');
+
+  if (lastSpaceIndex > 0) {
+    return truncated.slice(0, lastSpaceIndex) + '...';
+  }
+
+  return truncated + '...';
+}
+
 type PropertyCardProps = {
   property: Property | Project;
   index?: number;
@@ -92,7 +106,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           >
             {property.name}
           </h3>
-          <p className="text-sm text-ink/75">{property.summary}</p>
+          <p className="text-sm text-ink/75">{truncateText(property.summary)}</p>
           <p className="mt-auto text-xs font-medium uppercase tracking-[0.18em] text-ink/55">
             {property.location}
           </p>

@@ -36,7 +36,6 @@ export interface Project {
   status: ProjectStatus
   featured: boolean
   order: number
-  showInvestmentHighlights: boolean
   heroImage?: SanityImage
   gallery?: SanityImage[]
 }
@@ -74,15 +73,6 @@ export interface ContactInfo {
   country: string
   mapLatitude: number
   mapLongitude: number
-}
-
-export interface InvestmentHighlights {
-  sectionHeadline: string
-  introParagraphs: string[]
-  highlights: Array<{
-    title: string
-    description: string
-  }>
 }
 
 // Collections

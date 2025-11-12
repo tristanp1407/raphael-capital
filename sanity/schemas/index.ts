@@ -8,7 +8,6 @@ import brandLogo from './collections/brandLogo'
 import siteSettings from './singletons/siteSettings'
 import footerContent from './singletons/footerContent'
 import contactInfo from './singletons/contactInfo'
-import investmentHighlights from './singletons/investmentHighlights'
 
 // Page Singletons
 import homePage from './pages/homePage'
@@ -28,7 +27,6 @@ export const schemaTypes = [
   siteSettings,
   footerContent,
   contactInfo,
-  investmentHighlights,
 
   // Page Singletons
   homePage,

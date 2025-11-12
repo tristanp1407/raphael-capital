@@ -165,7 +165,6 @@ export default async function ProjectsPropertyPage({
       status: property.status,
       featured: property.featured || false,
       order: 0,
-      showInvestmentHighlights: true,
       heroImage: {
         asset: {
           _id: "placeholder",
@@ -360,53 +359,6 @@ export default async function ProjectsPropertyPage({
         </div>
       </Section>
 
-      <Section headline="Investment highlights" containerClassName="gap-8">
-        <div className="flex flex-col gap-4">
-          <div className="space-y-3 text-sm text-ink/80">
-            <p>
-              Raphael Capital originated, structured and stewarded{" "}
-              <strong>{project.name}</strong> on behalf of trusted capital
-              partners. The project underscores our discipline in identifying
-              enduring value within {project.location}, pairing thoughtful
-              design with long-term tenancy strategies.
-            </p>
-            <p>
-              Our stewardship encompassed acquisition, repositioning and
-              stabilisation, aligning the asset with institutional-grade ESG and
-              operational benchmarks.
-            </p>
-          </div>
-          <div className="grid gap-3">
-            <div className="rounded-[var(--radius-card)] border border-border-subtle/60 bg-white p-4 shadow-sm">
-              <p className="text-sm font-semibold text-inkStrong">
-                Disciplined acquisition
-              </p>
-              <p className="mt-1 text-sm text-ink/75">
-                Off-market sourcing ensured favourable entry pricing and aligned
-                incentives with co-investors.
-              </p>
-            </div>
-            <div className="rounded-[var(--radius-card)] border border-border-subtle/60 bg-white p-4 shadow-sm">
-              <p className="text-sm font-semibold text-inkStrong">
-                Design-led repositioning
-              </p>
-              <p className="mt-1 text-sm text-ink/75">
-                Architectural upgrades delivered best-in-class space while
-                preserving the character of the surrounding neighbourhood.
-              </p>
-            </div>
-            <div className="rounded-[var(--radius-card)] border border-border-subtle/60 bg-white p-4 shadow-sm">
-              <p className="text-sm font-semibold text-inkStrong">
-                Stewardship &amp; ESG
-              </p>
-              <p className="mt-1 text-sm text-ink/75">
-                Operational enhancements improved energy performance, tenant
-                experience and long-term resilience.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Section>
       {related.length ? (
         <Section
           headline="More from our projects"

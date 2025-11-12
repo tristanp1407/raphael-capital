@@ -26,7 +26,6 @@ export const allProjectsQuery = groq`
     status,
     featured,
     order,
-    showInvestmentHighlights,
     heroImage {
       asset->{
         _id,
@@ -57,7 +56,6 @@ export const featuredProjectsQuery = groq`
     status,
     featured,
     order,
-    showInvestmentHighlights,
     heroImage {
       asset->{
         _id,
@@ -88,7 +86,6 @@ export const projectBySlugQuery = groq`
     status,
     featured,
     order,
-    showInvestmentHighlights,
     heroImage {
       asset->{
         _id,
@@ -138,7 +135,6 @@ export const currentProjectsQuery = groq`
     status,
     featured,
     order,
-    showInvestmentHighlights,
     heroImage {
       asset->{
         _id,
@@ -169,7 +165,6 @@ export const previousProjectsQuery = groq`
     status,
     featured,
     order,
-    showInvestmentHighlights,
     heroImage {
       asset->{
         _id,
@@ -232,18 +227,6 @@ export const contactInfoQuery = groq`
     country,
     mapLatitude,
     mapLongitude
-  }
-`
-
-// Get investment highlights
-export const investmentHighlightsQuery = groq`
-  *[_type == "investmentHighlights"][0] {
-    sectionHeadline,
-    introParagraphs,
-    highlights[] {
-      title,
-      description
-    }
   }
 `
 
