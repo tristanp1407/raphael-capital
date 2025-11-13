@@ -27,10 +27,10 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "contact@raphaelcapital.co.uk",
       to: "samuel.levy@raphaelcapital.co.uk",
       replyTo: email,
-      subject: `Raphael Capital - New Contact Form Submission`,
+      subject: `New Contact Form Submission`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1a1a1a; border-bottom: 2px solid #2276fc; padding-bottom: 10px;">
