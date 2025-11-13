@@ -39,9 +39,45 @@ export default defineType({
     defineField({
       name: 'summary',
       title: 'Summary',
-      type: 'text',
-      rows: 3,
-      description: 'Brief description of the project',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [{ title: 'Normal', value: 'normal' }],
+          lists: [{ title: 'Bullet', value: 'bullet' }],
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL',
+                    validation: (Rule) =>
+                      Rule.uri({
+                        scheme: ['http', 'https', 'mailto', 'tel'],
+                      }),
+                  },
+                  {
+                    name: 'blank',
+                    type: 'boolean',
+                    title: 'Open in new tab',
+                    initialValue: true,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+      description: 'Brief description with formatting: paragraphs, bold, italic, bullet points, and hyperlinks',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

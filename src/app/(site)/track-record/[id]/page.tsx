@@ -9,9 +9,11 @@ import { Section } from "@/components/section";
 import { RelatedProperties } from "@/components/related-properties";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
 import { ProjectImageCarousel } from "@/components/project-image-carousel";
+import { PortableTextRenderer } from "@/components/portable-text";
 import { client } from "@/lib/sanity/client";
 import { projectBySlugQuery, projectSlugsQuery, allProjectsQuery } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
+import { portableTextToPlainText } from "@/lib/portable-text";
 import type { Project } from "@/types/sanity";
 import {
   allProperties,
@@ -96,7 +98,7 @@ export async function generateMetadata({
     };
   }
 
-  const description = `${project.summary} Located in ${project.location}.`;
+  const description = `${portableTextToPlainText(project.summary)} Located in ${project.location}.`;
   const title = `${project.name} | Projects | Raphael Capital`;
   const url = `/track-record/${project.slug}`;
   const imageUrl = project.heroImage
@@ -191,7 +193,7 @@ export default async function ProjectsPropertyPage({
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     name: project.name,
-    description: project.summary,
+    description: portableTextToPlainText(project.summary),
     url: `https://raphaelcapital.co.uk/track-record/${project.slug}`,
     address: {
       "@type": "PostalAddress",
@@ -331,7 +333,7 @@ export default async function ProjectsPropertyPage({
           >
             {project.name}
           </h1>
-          <p className="max-w-3xl text-lg text-ink/80">{project.summary}</p>
+          <PortableTextRenderer value={project.summary} className="max-w-3xl text-lg text-ink/80" />
           <div className="flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.24em] text-ink/60">
             <span>Location: {project.location}</span>
           </div>

@@ -1,4 +1,5 @@
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export type ProjectStatus = 'current' | 'previous'
 
@@ -32,7 +33,7 @@ export interface Project {
   slug: string
   location: string
   sectors: Sector[]
-  summary: string
+  summary: PortableTextBlock[] | string // Portable Text or plain text (backward compatibility)
   status: ProjectStatus
   featured: boolean
   order: number

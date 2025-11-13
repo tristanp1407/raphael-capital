@@ -9,10 +9,12 @@
     "migrate": "tsx scripts/migrate-to-sanity.ts",
     "migrate:sectors": "tsx scripts/migrate-sectors.ts",
     "migrate:sectors-array": "tsx scripts/migrate-sectors-to-array.ts",
+    "migrate:summary": "tsx scripts/migrate-summary-to-portable-text.ts",
     "fix:sectors": "tsx scripts/fix-project-sectors.ts",
     "remove:investment-highlights": "tsx scripts/remove-investment-highlights-field.ts"
   },
   "dependencies": {
+    "@portabletext/react": "^5.0.0",
     "@sanity/client": "^7.12.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.13.0",
@@ -29,6 +31,7 @@
     "tsx": "^4.20.6"
   },
   "devDependencies": {
+    "@portabletext/types": "^3.0.0",
     "@sanity/types": "^4.13.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
