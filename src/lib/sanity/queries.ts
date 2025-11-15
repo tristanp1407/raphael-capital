@@ -22,7 +22,18 @@ export const allProjectsQuery = groq`
       name,
       "slug": slug.current
     },
-    summary,
+    summary[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    },
     status,
     featured,
     order,
@@ -52,7 +63,18 @@ export const featuredProjectsQuery = groq`
       name,
       "slug": slug.current
     },
-    summary,
+    summary[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    },
     status,
     featured,
     order,
@@ -82,7 +104,18 @@ export const projectBySlugQuery = groq`
       name,
       "slug": slug.current
     },
-    summary,
+    summary[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    },
     status,
     featured,
     order,
@@ -131,7 +164,18 @@ export const currentProjectsQuery = groq`
       name,
       "slug": slug.current
     },
-    summary,
+    summary[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    },
     status,
     featured,
     order,
@@ -161,7 +205,18 @@ export const previousProjectsQuery = groq`
       name,
       "slug": slug.current
     },
-    summary,
+    summary[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    },
     status,
     featured,
     order,

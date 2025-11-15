@@ -54,7 +54,7 @@ export default defineType({
               {
                 name: 'link',
                 type: 'object',
-                title: 'Link',
+                title: 'URL Link',
                 fields: [
                   {
                     name: 'href',
@@ -73,11 +73,30 @@ export default defineType({
                   },
                 ],
               },
+              {
+                name: 'fileLink',
+                type: 'object',
+                title: 'File Download',
+                fields: [
+                  {
+                    name: 'file',
+                    type: 'file',
+                    title: 'File',
+                    validation: (Rule) => Rule.required(),
+                  },
+                  {
+                    name: 'label',
+                    type: 'string',
+                    title: 'Download Label',
+                    description: 'Optional custom text for the download link',
+                  },
+                ],
+              },
             ],
           },
         },
       ],
-      description: 'Brief description with formatting: paragraphs, bold, italic, bullet points, and hyperlinks',
+      description: 'Brief description with formatting: paragraphs, bold, italic, bullet points, hyperlinks, and file downloads (single files only)',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

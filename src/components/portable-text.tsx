@@ -2,6 +2,8 @@
 
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
+import { useState } from 'react'
+import { downloadFile, getFilenameFromUrl } from '@/lib/download-utils'
 
 // Custom components for rendering Portable Text
 const components: PortableTextComponents = {
@@ -20,6 +22,53 @@ const components: PortableTextComponents = {
         >
           {children}
         </a>
+      )
+    },
+    fileLink: ({ value, children }) => {
+      const { file, label } = value
+      const [isDownloading, setIsDownloading] = useState(false)
+
+      const handleDownload = async (e: React.MouseEvent) => {
+        e.preventDefault()
+
+        // Debug logging
+        console.log('File link clicked:', { file, label, value })
+
+        if (isDownloading) {
+          console.log('Already downloading, skipping')
+          return
+        }
+
+        if (!file?.asset?.url) {
+          console.error('No file URL available:', file)
+          alert('File data is missing. The file may not be uploaded correctly in the CMS.')
+          return
+        }
+
+        setIsDownloading(true)
+        try {
+          await downloadFile({
+            url: file.asset.url,
+            filename: file.asset.originalFilename || getFilenameFromUrl(file.asset.url),
+          })
+        } catch (error) {
+          console.error('Download failed:', error)
+          alert('Failed to download file. Please try again.')
+        } finally {
+          setIsDownloading(false)
+        }
+      }
+
+      return (
+        <button
+          onClick={handleDownload}
+          disabled={isDownloading}
+          className="text-rc-navy underline hover:text-rc-indigo transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          title={label || file?.asset?.originalFilename || 'Download file'}
+        >
+          {children}
+          {isDownloading && <span className="text-xs ml-1">(downloading...)</span>}
+        </button>
       )
     },
     strong: ({ children }) => <strong className="font-semibold">{children}</strong>,

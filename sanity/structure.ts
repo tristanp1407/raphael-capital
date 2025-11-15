@@ -8,7 +8,6 @@ import {
   DocumentTextIcon,
   EnvelopeIcon,
   PinIcon,
-  BulbOutlineIcon,
   UserIcon,
   ImageIcon,
   ThListIcon,
@@ -102,14 +101,6 @@ export const structure = (S: StructureBuilder) =>
                 .title('Contact Information')
                 .icon(PinIcon)
                 .child(S.document().schemaType('contactInfo').documentId('contactInfo')),
-              S.listItem()
-                .title('Investment Highlights')
-                .icon(BulbOutlineIcon)
-                .child(
-                  S.document()
-                    .schemaType('investmentHighlights')
-                    .documentId('investmentHighlights')
-                ),
             ])
         ),
     ])

@@ -20,6 +20,17 @@ export interface SanityImage {
   caption?: string
 }
 
+export interface SanityFile {
+  asset: {
+    _id: string
+    url: string
+    originalFilename: string
+    extension: string
+    size: number
+    mimeType: string
+  }
+}
+
 export interface Sector {
   _id: string
   name: string
