@@ -6,10 +6,20 @@ interface SiteFooterProps {
   footerContent: FooterContent | null;
   contactInfo: ContactInfo | null;
   teamMembers: TeamMember[];
+  showNewsNav?: boolean;
 }
 
-export function SiteFooter({ footerContent, contactInfo, teamMembers }: SiteFooterProps) {
+export function SiteFooter({ footerContent, contactInfo, teamMembers, showNewsNav = false }: SiteFooterProps) {
   const year = new Date().getFullYear();
+
+  // Build the rendered quick-links list. When News is enabled site-wide,
+  // append a News link if the editor hasn't already added one manually.
+  const baseQuickLinks = footerContent?.quickLinks ?? [];
+  const hasNewsLink = baseQuickLinks.some((link) => link.href === "/news");
+  const quickLinks =
+    showNewsNav && !hasNewsLink
+      ? [...baseQuickLinks, { text: "News", href: "/news" }]
+      : baseQuickLinks;
 
   return (
     <footer className="border-t border-border-subtle/70 bg-bg-surface">
@@ -53,7 +63,7 @@ export function SiteFooter({ footerContent, contactInfo, teamMembers }: SiteFoot
               {footerContent?.quickLinksText || "Navigation"}
             </p>
             <ul className="grid gap-2 text-sm text-ink/75">
-              {footerContent?.quickLinks?.map((link) => (
+              {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

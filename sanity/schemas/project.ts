@@ -121,6 +121,13 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'sold',
+      title: 'Sold',
+      type: 'boolean',
+      description: 'Marks the project as sold and shows a SOLD ribbon everywhere the project appears.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',
@@ -178,12 +185,13 @@ export default defineType({
       subtitle: 'location',
       media: 'heroImage',
       status: 'status',
+      sold: 'sold',
     },
     prepare(selection) {
-      const { title, subtitle, media, status } = selection
+      const { title, subtitle, media, status, sold } = selection
       return {
         title: title,
-        subtitle: `${subtitle} • ${status}`,
+        subtitle: `${subtitle} • ${status}${sold ? ' • SOLD' : ''}`,
         media: media,
       }
     },

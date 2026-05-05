@@ -5,9 +5,21 @@ import { Section } from "@/components/section";
 import { PropertyGrid } from "@/components/property-grid";
 import { LogosCarousel } from "@/components/logos-carousel";
 import { client } from "@/lib/sanity/client";
-import { featuredProjectsQuery, homePageQuery, allBrandLogosQuery } from "@/lib/sanity/queries";
-import type { Project, HomePage as HomePageContent, BrandLogo } from "@/types/sanity";
+import {
+  featuredProjectsQuery,
+  homePageQuery,
+  allBrandLogosQuery,
+  recentNewsForHomeQuery,
+} from "@/lib/sanity/queries";
+import { getProjectLabels } from "@/lib/sanity/labels";
+import type {
+  Project,
+  HomePage as HomePageContent,
+  BrandLogo,
+  CompanyNewsPost,
+} from "@/types/sanity";
 import { CallToActionBanner } from "@/components/call-to-action-banner";
+import { NewsGrid } from "@/components/news-grid";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -50,15 +62,36 @@ export default async function HomePage() {
     console.error("Failed to fetch data from Sanity:", error);
   }
 
+  const labels = await getProjectLabels();
+
   if (!pageContent) {
     return <div className="p-10 text-center text-red-600">Home page content not found in CMS</div>;
+  }
+
+  // Fetch recent news only when the section is enabled.
+  // We fetch one extra post as a "has more" probe — if the query returns
+  // more than the configured limit, there are additional articles on /news.
+  let recentNews: CompanyNewsPost[] = [];
+  let hasMoreNews = false;
+  if (pageContent.showNewsSection) {
+    const limit = Math.min(Math.max(pageContent.newsSectionCount ?? 3, 1), 6);
+    try {
+      const fetched = await client.fetch<CompanyNewsPost[]>(
+        recentNewsForHomeQuery,
+        { limit: limit + 1 },
+      );
+      hasMoreNews = fetched.length > limit;
+      recentNews = fetched.slice(0, limit);
+    } catch (error) {
+      console.error("Failed to fetch recent news:", error);
+    }
   }
   return (
     <div className="flex flex-col">
       <Hero
         heading={pageContent.heroHeading}
         subheading={pageContent.heroSubheading}
-        cta1Text={pageContent.heroCta1Text}
+        cta1Text={pageContent.heroCta1Text || `View ${labels.plural}`}
         cta1Href={pageContent.heroCta1Href}
         cta2Text={pageContent.heroCta2Text}
         cta2Href={pageContent.heroCta2Href}
@@ -73,10 +106,34 @@ export default async function HomePage() {
         </p>
         <PropertyGrid properties={projects} />
       </Section>
+      {pageContent.showNewsSection && recentNews.length > 0 ? (
+        <Section
+          id="recent-news"
+          headline={pageContent.newsSectionHeadline || "Recent Company News"}
+          className="bg-bg-faint"
+          containerClassName="gap-10"
+        >
+          <NewsGrid posts={recentNews} />
+          {hasMoreNews ? (
+            <div>
+              <Link
+                href="/news"
+                className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[4px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
+              >
+                View all news →
+              </Link>
+            </div>
+          ) : null}
+        </Section>
+      ) : null}
       <Section
         id="about-overview"
         headline={pageContent.aboutHeadline}
-        className="bg-bg-faint"
+        className={
+          pageContent.showNewsSection && recentNews.length > 0
+            ? undefined
+            : "bg-bg-faint"
+        }
         containerClassName="gap-16"
       >
         <div className="flex flex-col gap-12">

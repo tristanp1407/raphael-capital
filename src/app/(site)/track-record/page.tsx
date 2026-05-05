@@ -3,9 +3,11 @@ import { Section } from "@/components/section";
 import { TrackRecordView } from "@/components/track-record-view";
 import { client } from "@/lib/sanity/client";
 import { allProjectsQuery, allSectorsQuery, trackRecordPageQuery } from "@/lib/sanity/queries";
+import { getProjectLabels } from "@/lib/sanity/labels";
 import type { Project, Sector, TrackRecordPage as TrackRecordPageContent } from "@/types/sanity";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const labels = await getProjectLabels();
   try {
     const pageContent = await client.fetch(trackRecordPageQuery);
     if (pageContent) {
@@ -20,9 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // Fallback metadata
   return {
-    title: "Projects | Raphael Capital",
-    description:
-      "Review Raphael Capital's current and previous UK property projects across retail, office, industrial, residential, mixed-use and development sectors.",
+    title: `${labels.plural} | Raphael Capital`,
+    description: `Review Raphael Capital's current and previous UK property ${labels.plural.toLowerCase()} across retail, office, industrial, residential, mixed-use and development sectors.`,
   };
 }
 

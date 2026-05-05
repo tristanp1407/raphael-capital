@@ -109,6 +109,28 @@ export default defineType({
       initialValue: '/track-record',
     }),
 
+    // Recent Company News Section
+    defineField({
+      name: 'showNewsSection',
+      title: 'Show "Recent News" on homepage',
+      type: 'boolean',
+      description: 'Toggle this on to display the Recent Company News section on the home page.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'newsSectionHeadline',
+      title: 'News section headline',
+      type: 'string',
+      initialValue: 'Recent Company News',
+    }),
+    defineField({
+      name: 'newsSectionCount',
+      title: 'Number of posts to display',
+      type: 'number',
+      initialValue: 3,
+      validation: (Rule) => Rule.integer().min(1).max(6),
+    }),
+
     // SEO
     defineField({
       name: 'seoTitle',

@@ -12,6 +12,7 @@ import { ProjectImageCarousel } from "@/components/project-image-carousel";
 import { PortableTextRenderer } from "@/components/portable-text";
 import { client } from "@/lib/sanity/client";
 import { projectBySlugQuery, projectSlugsQuery, allProjectsQuery } from "@/lib/sanity/queries";
+import { getProjectLabels } from "@/lib/sanity/labels";
 import { urlFor } from "@/lib/sanity/image";
 import { portableTextToPlainText } from "@/lib/portable-text";
 import type { Project } from "@/types/sanity";
@@ -45,6 +46,7 @@ export async function generateMetadata({
   params,
 }: ProjectsPropertyPageProps): Promise<Metadata> {
   const { id } = await params;
+  const labels = await getProjectLabels();
   let project: Project | null = null;
 
   try {
@@ -58,14 +60,14 @@ export async function generateMetadata({
     const property = getPropertyById(id);
     if (!property) {
       return {
-        title: "Project not found | Raphael Capital",
-        description: "The requested project could not be located.",
+        title: `${labels.singular} not found | Raphael Capital`,
+        description: `The requested ${labels.singular.toLowerCase()} could not be located.`,
       };
     }
 
     const media = getPropertyPlaceholderById(property.id);
     const description = `${property.summary} Located in ${property.location}.`;
-    const title = `${property.name} | Projects | Raphael Capital`;
+    const title = `${property.name} | ${labels.plural} | Raphael Capital`;
     const url = `/track-record/${property.id}`;
 
     return {
@@ -99,7 +101,7 @@ export async function generateMetadata({
   }
 
   const description = `${portableTextToPlainText(project.summary)} Located in ${project.location}.`;
-  const title = `${project.name} | Projects | Raphael Capital`;
+  const title = `${project.name} | ${labels.plural} | Raphael Capital`;
   const url = `/track-record/${project.slug}`;
   const imageUrl = project.heroImage
     ? urlFor(project.heroImage.asset).width(1600).height(900).url()
@@ -141,6 +143,7 @@ export default async function ProjectsPropertyPage({
   params,
 }: ProjectsPropertyPageProps) {
   const { id } = await params;
+  const labels = await getProjectLabels();
   let project: Project | null = null;
 
   try {
@@ -285,7 +288,7 @@ export default async function ProjectsPropertyPage({
                 href="/track-record"
                 className="font-medium text-ink/70 hover:text-rc-navy"
               >
-                Projects
+                {labels.plural}
               </Link>
             </li>
             <li className="text-ink/35">/</li>
@@ -327,6 +330,11 @@ export default async function ProjectsPropertyPage({
             >
               {project.status === "current" ? "Current" : "Previous"}
             </span>
+            {project.sold ? (
+              <span className="rounded-full bg-rc-navy px-3 py-1 font-semibold text-white shadow-sm">
+                Sold
+              </span>
+            ) : null}
           </div>
           <h1
             className={`${playfair.className} text-4xl font-black leading-tight text-inkStrong sm:text-5xl lg:text-6xl`}
@@ -354,7 +362,7 @@ export default async function ProjectsPropertyPage({
               })}
             >
               <span className="text-rc-navy group-hover:text-white group-focus-visible:text-white">
-                Back to projects
+                Back to {labels.plural.toLowerCase()}
               </span>
             </Link>
           </div>
@@ -363,7 +371,7 @@ export default async function ProjectsPropertyPage({
 
       {related.length ? (
         <Section
-          headline="More from our projects"
+          headline={`More from our ${labels.plural.toLowerCase()}`}
           className="bg-bg-faint"
           containerClassName="gap-12"
         >

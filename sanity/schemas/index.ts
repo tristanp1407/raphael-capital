@@ -3,6 +3,7 @@ import project from './project'
 import sector from './sector'
 import teamMember from './collections/teamMember'
 import brandLogo from './collections/brandLogo'
+import companyNews from './collections/companyNews'
 
 // Global Singletons
 import siteSettings from './singletons/siteSettings'
@@ -22,6 +23,7 @@ export const schemaTypes = [
   sector,
   teamMember,
   brandLogo,
+  companyNews,
 
   // Global Singletons
   siteSettings,

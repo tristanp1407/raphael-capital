@@ -38,6 +38,29 @@ export default defineType({
       validation: (Rule) => Rule.required().max(160),
     }),
     defineField({
+      name: 'projectLabelPlural',
+      title: 'Projects label (plural)',
+      type: 'string',
+      initialValue: 'Projects',
+      description:
+        'Used in nav, breadcrumbs, default CTAs and auto-generated SEO titles. Free-text fields elsewhere (homepage, footer) need to be edited separately.',
+    }),
+    defineField({
+      name: 'projectLabelSingular',
+      title: 'Project label (singular)',
+      type: 'string',
+      initialValue: 'Project',
+      description: 'Used in singular contexts (e.g. "Project not found", individual page titles).',
+    }),
+    defineField({
+      name: 'showNewsNav',
+      title: 'Show "News" link in nav and footer',
+      type: 'boolean',
+      description:
+        'Hides or reveals the News tab in the main navigation and the footer Quick Links. Leave off until you have news posts to publish.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'defaultOgImage',
       title: 'Default Open Graph Image',
       type: 'image',
