@@ -47,6 +47,7 @@ export interface Project {
   summary: PortableTextBlock[] | string // Portable Text or plain text (backward compatibility)
   status: ProjectStatus
   featured: boolean
+  sold?: boolean
   order: number
   heroImage?: SanityImage
   gallery?: SanityImage[]
@@ -62,6 +63,9 @@ export interface SiteSettings {
   companyDescription: string
   defaultSeoTitle: string
   defaultSeoDescription: string
+  projectLabelPlural?: string
+  projectLabelSingular?: string
+  showNewsNav?: boolean
   defaultOgImage?: SanityImage
 }
 
@@ -107,6 +111,20 @@ export interface BrandLogo {
   active: boolean
 }
 
+export interface CompanyNewsPost {
+  _id: string
+  title: string
+  slug: string
+  subtitle?: string
+  coverImage: SanityImage
+  body: PortableTextBlock[] | string
+  publishedAt: string
+  published: boolean
+  featuredOnHome?: boolean
+  seoTitle?: string
+  seoDescription?: string
+}
+
 // Page Singletons
 export interface HomePage {
   heroHeading: string
@@ -123,6 +141,9 @@ export interface HomePage {
   ctaBannerHeadline: string
   ctaBannerSubheadline: string
   ctaBannerHref: string
+  showNewsSection?: boolean
+  newsSectionHeadline?: string
+  newsSectionCount?: number
   seoTitle: string
   seoDescription: string
 }

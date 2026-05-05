@@ -36,6 +36,7 @@ export const allProjectsQuery = groq`
     },
     status,
     featured,
+    sold,
     order,
     heroImage {
       asset->{
@@ -77,6 +78,7 @@ export const featuredProjectsQuery = groq`
     },
     status,
     featured,
+    sold,
     order,
     heroImage {
       asset->{
@@ -118,6 +120,7 @@ export const projectBySlugQuery = groq`
     },
     status,
     featured,
+    sold,
     order,
     heroImage {
       asset->{
@@ -178,6 +181,7 @@ export const currentProjectsQuery = groq`
     },
     status,
     featured,
+    sold,
     order,
     heroImage {
       asset->{
@@ -219,6 +223,7 @@ export const previousProjectsQuery = groq`
     },
     status,
     featured,
+    sold,
     order,
     heroImage {
       asset->{
@@ -243,6 +248,9 @@ export const siteSettingsQuery = groq`
     companyDescription,
     defaultSeoTitle,
     defaultSeoDescription,
+    projectLabelPlural,
+    projectLabelSingular,
+    showNewsNav,
     defaultOgImage {
       asset->{
         _id,
@@ -386,6 +394,9 @@ export const homePageQuery = groq`
     ctaBannerHeadline,
     ctaBannerSubheadline,
     ctaBannerHref,
+    showNewsSection,
+    newsSectionHeadline,
+    newsSectionCount,
     seoTitle,
     seoDescription
   }
@@ -453,5 +464,89 @@ export const contactPageQuery = groq`
     formErrorMessage,
     seoTitle,
     seoDescription
+  }
+`
+
+// ========== COMPANY NEWS ==========
+
+const newsCardProjection = `
+  _id,
+  title,
+  "slug": slug.current,
+  subtitle,
+  publishedAt,
+  published,
+  featuredOnHome,
+  coverImage {
+    asset->{
+      _id,
+      url,
+      metadata {
+        lqip,
+        dimensions
+      }
+    },
+    alt
+  }
+`
+
+// Get all published news posts
+export const allNewsQuery = groq`
+  *[_type == "companyNews" && published == true] | order(publishedAt desc) {
+    ${newsCardProjection}
+  }
+`
+
+// Get news post slugs (for static generation)
+export const newsSlugsQuery = groq`
+  *[_type == "companyNews" && published == true] {
+    "slug": slug.current
+  }
+`
+
+// Get single news post by slug
+export const newsBySlugQuery = groq`
+  *[_type == "companyNews" && slug.current == $slug && published == true][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    subtitle,
+    publishedAt,
+    published,
+    featuredOnHome,
+    seoTitle,
+    seoDescription,
+    coverImage {
+      asset->{
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions
+        }
+      },
+      alt
+    },
+    body[] {
+      ...,
+      markDefs[] {
+        ...,
+        _type == "fileLink" => {
+          ...,
+          file {
+            asset->
+          }
+        }
+      }
+    }
+  }
+`
+
+// Get recent news for the homepage section.
+// Featured posts first, then chronological. Cap with $limit.
+export const recentNewsForHomeQuery = groq`
+  *[_type == "companyNews" && published == true]
+    | order(featuredOnHome desc, publishedAt desc) [0...$limit] {
+    ${newsCardProjection}
   }
 `

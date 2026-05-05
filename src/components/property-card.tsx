@@ -43,6 +43,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
     property.status === "current"
       ? "bg-white/90 text-rc-navy"
       : "bg-white/70 text-ink/70";
+  const isSold = isProject && Boolean((property as Project).sold);
 
   return (
     <Link
@@ -77,6 +78,16 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
               {statusLabel}
             </span>
           </div>
+          {isSold ? (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-px -right-px z-10 h-28 w-28 overflow-hidden"
+            >
+              <span className="absolute bottom-[22%] right-[-32%] w-44 -rotate-45 bg-rc-navy py-1 text-center text-[11px] font-semibold uppercase tracking-[0.32em] text-white shadow-md">
+                Sold
+              </span>
+            </div>
+          ) : null}
           <div className="absolute inset-0 flex items-end p-6">
             <p className="text-xs uppercase tracking-[0.28em] text-white/90">
               {'sectors' in property && Array.isArray(property.sectors) && property.sectors.length > 0
@@ -92,6 +103,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
             className={`${playfair.className} text-xl font-black text-inkStrong`}
           >
             {property.name}
+            {isSold ? <span className="sr-only"> (Sold)</span> : null}
           </h3>
           <p className="text-sm text-ink/75">{truncatePortableText(property.summary)}</p>
           <p className="mt-auto text-xs font-medium uppercase tracking-[0.18em] text-ink/55">

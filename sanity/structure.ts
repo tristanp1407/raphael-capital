@@ -79,6 +79,14 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
+      // Company News
+      S.listItem()
+        .title('Company News')
+        .icon(DocumentTextIcon)
+        .child(S.documentTypeList('companyNews').title('Company News')),
+
+      S.divider(),
+
       // Site Settings Section
       S.listItem()
         .title('Site Settings')

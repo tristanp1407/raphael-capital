@@ -6,15 +6,24 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const navLinks = [
+type NavLink = { href: string; label: string };
+
+const DEFAULT_NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/track-record", label: "Projects" },
+  { href: "/news", label: "News" },
   { href: "/requirements", label: "Requirements" },
   { href: "/contact", label: "Contact" },
-] as const;
+];
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  navLinks?: NavLink[];
+};
+
+export function SiteHeader({
+  navLinks = DEFAULT_NAV_LINKS,
+}: SiteHeaderProps = {}) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
