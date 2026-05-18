@@ -106,34 +106,10 @@ export default async function HomePage() {
         </p>
         <PropertyGrid properties={projects} />
       </Section>
-      {pageContent.showNewsSection && recentNews.length > 0 ? (
-        <Section
-          id="recent-news"
-          headline={pageContent.newsSectionHeadline || "Recent Company News"}
-          className="bg-bg-faint"
-          containerClassName="gap-10"
-        >
-          <NewsGrid posts={recentNews} />
-          {hasMoreNews ? (
-            <div>
-              <Link
-                href="/news"
-                className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[4px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
-              >
-                View all news →
-              </Link>
-            </div>
-          ) : null}
-        </Section>
-      ) : null}
       <Section
         id="about-overview"
         headline={pageContent.aboutHeadline}
-        className={
-          pageContent.showNewsSection && recentNews.length > 0
-            ? undefined
-            : "bg-bg-faint"
-        }
+        className="bg-bg-faint"
         containerClassName="gap-16"
       >
         <div className="flex flex-col gap-12">
@@ -151,6 +127,25 @@ export default async function HomePage() {
           <LogosCarousel logos={brands} />
         </div>
       </Section>
+      {pageContent.showNewsSection && recentNews.length > 0 ? (
+        <Section
+          id="recent-news"
+          headline={pageContent.newsSectionHeadline || "Recent Company News"}
+          containerClassName="gap-10"
+        >
+          <NewsGrid posts={recentNews} />
+          {hasMoreNews ? (
+            <div>
+              <Link
+                href="/news"
+                className="inline-flex items-center gap-2 text-sm font-medium text-inkStrong underline decoration-[4px] decoration-accent/40 underline-offset-8 transition hover:decoration-accent"
+              >
+                View all news →
+              </Link>
+            </div>
+          ) : null}
+        </Section>
+      ) : null}
       <CallToActionBanner
         className="mt-0"
         href={pageContent.ctaBannerHref}
