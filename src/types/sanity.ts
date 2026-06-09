@@ -48,6 +48,7 @@ export interface Project {
   status: ProjectStatus
   featured: boolean
   sold?: boolean
+  archived?: boolean
   order: number
   heroImage?: SanityImage
   gallery?: SanityImage[]

@@ -128,6 +128,14 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'archived',
+      title: 'Archived',
+      type: 'boolean',
+      description:
+        'Hide this project from all public listings (homepage, /track-record, related projects). The project stays in the CMS and can be unarchived at any time.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',
@@ -186,12 +194,14 @@ export default defineType({
       media: 'heroImage',
       status: 'status',
       sold: 'sold',
+      archived: 'archived',
     },
     prepare(selection) {
-      const { title, subtitle, media, status, sold } = selection
+      const { title, subtitle, media, status, sold, archived } = selection
+      const flags = [archived && 'ARCHIVED', sold && 'SOLD'].filter(Boolean).join(' • ')
       return {
-        title: title,
-        subtitle: `${subtitle} • ${status}${sold ? ' • SOLD' : ''}`,
+        title: archived ? `[Archived] ${title}` : title,
+        subtitle: `${subtitle} • ${status}${flags ? ' • ' + flags : ''}`,
         media: media,
       }
     },

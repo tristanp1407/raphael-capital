@@ -12,7 +12,7 @@ export const allSectorsQuery = groq`
 
 // Get all projects
 export const allProjectsQuery = groq`
-  *[_type == "project"] | order(coalesce(order, -1) desc) {
+  *[_type == "project" && archived != true] | order(coalesce(order, -1) desc) {
     _id,
     name,
     "slug": slug.current,
@@ -37,6 +37,7 @@ export const allProjectsQuery = groq`
     status,
     featured,
     sold,
+    archived,
     order,
     heroImage {
       asset->{
@@ -54,7 +55,7 @@ export const allProjectsQuery = groq`
 
 // Get featured projects
 export const featuredProjectsQuery = groq`
-  *[_type == "project" && featured == true] | order(coalesce(order, -1) desc) {
+  *[_type == "project" && featured == true && archived != true] | order(coalesce(order, -1) desc) {
     _id,
     name,
     "slug": slug.current,
@@ -79,6 +80,7 @@ export const featuredProjectsQuery = groq`
     status,
     featured,
     sold,
+    archived,
     order,
     heroImage {
       asset->{
@@ -121,6 +123,7 @@ export const projectBySlugQuery = groq`
     status,
     featured,
     sold,
+    archived,
     order,
     heroImage {
       asset->{
@@ -150,14 +153,14 @@ export const projectBySlugQuery = groq`
 
 // Get all project slugs (for static generation)
 export const projectSlugsQuery = groq`
-  *[_type == "project"] {
+  *[_type == "project" && archived != true] {
     "slug": slug.current
   }
 `
 
 // Get current projects
 export const currentProjectsQuery = groq`
-  *[_type == "project" && status == "current"] | order(order asc) {
+  *[_type == "project" && status == "current" && archived != true] | order(order asc) {
     _id,
     name,
     "slug": slug.current,
@@ -182,6 +185,7 @@ export const currentProjectsQuery = groq`
     status,
     featured,
     sold,
+    archived,
     order,
     heroImage {
       asset->{
@@ -199,7 +203,7 @@ export const currentProjectsQuery = groq`
 
 // Get previous projects
 export const previousProjectsQuery = groq`
-  *[_type == "project" && status == "previous"] | order(order asc) {
+  *[_type == "project" && status == "previous" && archived != true] | order(order asc) {
     _id,
     name,
     "slug": slug.current,
@@ -224,6 +228,7 @@ export const previousProjectsQuery = groq`
     status,
     featured,
     sold,
+    archived,
     order,
     heroImage {
       asset->{
