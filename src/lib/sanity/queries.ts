@@ -551,7 +551,7 @@ export const newsBySlugQuery = groq`
 // Featured posts first, then chronological. Cap with $limit.
 export const recentNewsForHomeQuery = groq`
   *[_type == "companyNews" && published == true]
-    | order(featuredOnHome desc, publishedAt desc) [0...$limit] {
+    | order(coalesce(featuredOnHome, false) desc, publishedAt desc) [0...$limit] {
     ${newsCardProjection}
   }
 `

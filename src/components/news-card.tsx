@@ -21,12 +21,22 @@ function formatDate(iso: string) {
   }
 }
 
+// A post can reach the grid without a usable image: the field is empty, or the
+// asset reference hasn't resolved. Neither should take the whole list down.
+function coverImageUrl(post: CompanyNewsPost) {
+  const asset = post.coverImage?.asset;
+  if (!asset) return "";
+  try {
+    return urlFor(asset).width(720).height(480).url();
+  } catch {
+    return "";
+  }
+}
+
 export function NewsCard({ post, index = 0 }: NewsCardProps) {
-  const imageUrl = post.coverImage
-    ? urlFor(post.coverImage.asset).width(720).height(480).url()
-    : "";
+  const imageUrl = coverImageUrl(post);
   const imageAlt = post.coverImage?.alt ?? post.title;
-  const imageLqip = post.coverImage?.asset.metadata.lqip;
+  const imageLqip = post.coverImage?.asset?.metadata?.lqip;
   const dateLabel = formatDate(post.publishedAt);
 
   return (

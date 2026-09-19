@@ -21,6 +21,11 @@ import type {
 import { CallToActionBanner } from "@/components/call-to-action-banner";
 import { NewsGrid } from "@/components/news-grid";
 
+// Content is editor-driven, so the page can't stay pinned to build time —
+// newly published news (and CMS edits generally) would never surface.
+// Revalidate on a short interval instead.
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const pageContent = await client.fetch(homePageQuery);

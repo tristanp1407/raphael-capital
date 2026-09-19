@@ -5,6 +5,9 @@ import { client } from "@/lib/sanity/client";
 import { allNewsQuery } from "@/lib/sanity/queries";
 import type { CompanyNewsPost } from "@/types/sanity";
 
+// Same reason as the homepage: new posts must appear without a redeploy.
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "News | Raphael Capital",
